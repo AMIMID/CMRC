@@ -3,7 +3,7 @@ Server.default = s = Server.local;
 ////server setup
 (
 s.options.numWireBufs = 1024*4;
-s.options.numOutputBusChannels=2;
+s.options.numOutputBusChannels=1;
 s.options.numInputBusChannels=0;
 TempoClock.default.tempo_(0.5);
 s.options.memSize = 8192*32;
@@ -1164,8 +1164,8 @@ SynthDef.new(\ospace1, {
 	var ph_x,ph_y,ph_z;
 
 
-//env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:1/bank1);
-			env=EnvGen.ar(Env.perc(0.05,6,level:1/bank1),doneAction:2);
+env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:1/bank1);
+			//env=EnvGen.ar(Env.perc(0.05,6,level:1/bank1),doneAction:2);
 fundamental1=fundamental*speed1.reciprocal;
 fundamental2=fundamental*speed2.reciprocal;
 fundamental3=fundamental*speed3.reciprocal;
@@ -1258,8 +1258,8 @@ SynthDef.new(\ospace2, {
 	var ph_x,ph_y,ph_z;
 
 
-//env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:1/bank1);
-			env=EnvGen.ar(Env.perc(0.05,6,level:1/bank1),doneAction:2);
+env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:1/bank1);
+			//env=EnvGen.ar(Env.perc(0.05,6,level:1/bank1),doneAction:2);
 fundamental1=fundamental*speed1.reciprocal;
 fundamental2=fundamental*speed2.reciprocal;
 fundamental3=fundamental*speed3.reciprocal;
@@ -1350,8 +1350,8 @@ SynthDef.new(\ospace3, {
 	var sphere1,sphere2,sphere3;
 	var ph_x,ph_y,ph_z;
 
-		//env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:1/bank1);
-			env=EnvGen.ar(Env.perc(0.05,6,level:1/bank1),doneAction:2);
+		env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:1/bank1);
+			//env=EnvGen.ar(Env.perc(0.05,6,level:1/bank1),doneAction:2);
 fundamental1=fundamental*speed1.reciprocal;
 fundamental2=fundamental*speed2.reciprocal;
 fundamental3=fundamental*speed3.reciprocal;
@@ -1444,7 +1444,7 @@ osc3=Osc.ar(~w3.bufnum,pitch3*mag_z.reciprocal,mul:amp3*mag_z,phase:(phase+ph_z)
 	\dur,Pseq(~dur1.mirror,1),
 		//\octave,Prand([1,2,4],inf),
 			\pl1,Pxrand(~list,inf),
-	//\angle_rot,Pseq(~angle,inf),
+	\angle_rot,Pseq(~angle.mirror,inf),
 	\speed1,Prand([1,3/4,2/3,1/2],inf),
 		\speed2,Prand([1,3/4,2/3,1/2],inf),
 		\speed3,Prand([1,3/4,2/3,1/2],inf);
@@ -1453,7 +1453,7 @@ osc3=Osc.ar(~w3.bufnum,pitch3*mag_z.reciprocal,mul:amp3*mag_z,phase:(phase+ph_z)
 	\dur,Pseq(~dur2.mirror,1),
 			//\octave,Prand([1,2,4],inf),
 			\pl1,Pxrand(~list,inf),
-//\angle_rot,Pseq(~angle,inf),
+\angle_rot,Pseq(~angle.mirror,inf),
 	\speed1,Prand([1,3/4,2/3,1/2],inf),
 		\speed2,Prand([1,3/4,2/3,1/2],inf),
 		\speed3,Prand([1,3/4,2/3,1/2],inf);
@@ -1462,7 +1462,7 @@ osc3=Osc.ar(~w3.bufnum,pitch3*mag_z.reciprocal,mul:amp3*mag_z,phase:(phase+ph_z)
 	\dur,Pseq(~dur3.mirror,1),
 			//\octave,Prand([1,2,4],inf),
 			\pl1,Pxrand(~list,inf),
-	//\angle_rot,Pseq(~angle,inf),
+	\angle_rot,Pseq(~angle.mirror,inf),
 	\speed1,Prand([1,3/4,2/3,1/2],inf),
 		\speed2,Prand([1,3/4,2/3,1/2],inf),
 		\speed3,Prand([1,3/4,2/3,1/2],inf);
@@ -1487,6 +1487,7 @@ Tdef.new(\h,{
 ~aa.play;
 ~bb.play;
 ~cc.play;
+s.record;
 			(1).wait;
 //s.stopRecording
 //	})
