@@ -1164,8 +1164,8 @@ SynthDef.new(\ospace1, {
 	var ph_x,ph_y,ph_z;
 
 
-env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:1/bank1);
-			//env=EnvGen.ar(Env.perc(0.05,6,level:1/bank1),doneAction:2);
+//env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:1/bank1);
+			env=EnvGen.ar(Env.perc(0.05,6,level:1/bank1),doneAction:2);
 fundamental1=fundamental*speed1.reciprocal;
 fundamental2=fundamental*speed2.reciprocal;
 fundamental3=fundamental*speed3.reciprocal;
@@ -1231,7 +1231,7 @@ ton3=2.pow(n3/(2*6));
 
 osc1=Osc.ar(~w1.bufnum,pitch1*mag_x.reciprocal,mul:amp1*mag_x,phase:(phase+ph_x).wrap(2pi.neg,2pi));
 
-					Out.ar(0,LeakDC.ar(LeakDC.ar(osc1,mul:env)));
+					Out.ar(0,(LeakDC.ar(osc1,mul:env)));
 
 
 			pl1=pl1+1;
@@ -1258,8 +1258,8 @@ SynthDef.new(\ospace2, {
 	var ph_x,ph_y,ph_z;
 
 
-env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:1/bank1);
-			//env=EnvGen.ar(Env.perc(0.05,6,level:1/bank1),doneAction:2);
+//env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:1/bank1);
+			env=EnvGen.ar(Env.perc(0.05,6,level:1/bank1),doneAction:2);
 fundamental1=fundamental*speed1.reciprocal;
 fundamental2=fundamental*speed2.reciprocal;
 fundamental3=fundamental*speed3.reciprocal;
@@ -1307,13 +1307,13 @@ ton3=2.pow(n3/(2*6));
 	ph_y=Complex(sphere.x,sphere.z).theta;
 	ph_z=Complex(sphere.x,sphere.y).theta;
 
-	    amp1=(ton1.reciprocal*speed1*octave.reciprocal*m.reciprocal).round(0.0000000000001);
-		amp2=(ton2.reciprocal*speed2*octave.reciprocal*m.reciprocal).round(0.0000000000001);
-		amp3=(ton3.reciprocal*speed3*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+	    amp1=(speed1*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+		amp2=(speed2*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+		amp3=(speed3*octave.reciprocal*m.reciprocal).round(0.0000000000001);
 
-	pitch1=(freq1*ton1*m).round(0.0000000000001);
-	pitch2=(freq2*ton2*m).round(0.0000000000001);
-	pitch3=(freq3*ton3*m).round(0.0000000000001);
+	pitch1=(freq1*m).round(0.0000000000001);
+	pitch2=(freq2*m).round(0.0000000000001);
+	pitch3=(freq3*m).round(0.0000000000001);
 
 					///%2==0 simulates .even
 			phase=if(pl2%2==0,0.degrad,90.degrad);
@@ -1325,7 +1325,7 @@ ton3=2.pow(n3/(2*6));
 
 osc2=Osc.ar(~w2.bufnum,pitch2*mag_y.reciprocal,mul:amp2*mag_y,phase:(phase+ph_y).wrap(2pi.neg,2pi));
 
-					Out.ar(0,LeakDC.ar(LeakDC.ar(osc2,mul:env)));
+						Out.ar(0,(LeakDC.ar(osc2,mul:env)));
 
 			pl1=pl1+1;
 	};
@@ -1350,8 +1350,8 @@ SynthDef.new(\ospace3, {
 	var sphere1,sphere2,sphere3;
 	var ph_x,ph_y,ph_z;
 
-		env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:1/bank1);
-			//env=EnvGen.ar(Env.perc(0.05,6,level:1/bank1),doneAction:2);
+		//env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:1/bank1);
+			env=EnvGen.ar(Env.perc(0.05,6,level:1/bank1),doneAction:2);
 fundamental1=fundamental*speed1.reciprocal;
 fundamental2=fundamental*speed2.reciprocal;
 fundamental3=fundamental*speed3.reciprocal;
@@ -1417,7 +1417,7 @@ ton3=2.pow(n3/(2*6));
 
 osc3=Osc.ar(~w3.bufnum,pitch3*mag_z.reciprocal,mul:amp3*mag_z,phase:(phase+ph_z).wrap(2pi.neg,2pi));
 
-					Out.ar(0,LeakDC.ar(LeakDC.ar(osc3,mul:env)));
+						Out.ar(0,(LeakDC.ar(osc3,mul:env)));
 
 			pl1=pl1+1;
 	};
