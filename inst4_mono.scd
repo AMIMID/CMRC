@@ -1148,6 +1148,7 @@ sig.plot;
 	);
 
 /////synths////
+	(
 (
 SynthDef.new(\ospace1, {
 	arg angle_rot=0,octave=1,cutt=440,speed1=1,speed2=1,speed3=1,decay=0.04444,pl1=0,mult=12;
@@ -1184,7 +1185,7 @@ mag_o=Cartesian(Select.kr(pl1,~magx_array.[pl2]), Select.kr(pl1,~magy_array.[pl2
 	sphere3=Spherical(Select.kr(pl1,~magz_array.[pl2]),Select.kr(pl1,~az),Select.kr(pl1,~el));
 	sphere=Spherical(mag_o.rho.round(0.00000001)/(2.sqrt),Select.kr(pl1,~az),Select.kr(pl1,~el));
 
-	xyz=Spherical(mult,sphere.theta,sphere.phi);
+	xyz=Spherical(mult,sphere1.theta,sphere.phi);
 	xyz_array=[xyz.x.round(0.000001),xyz.y.round(0.000001),xyz.z.round(0.000001)];
 
 v=Quaternion(0, xyz_array.[0], xyz_array.[1], xyz_array.[2]);
@@ -1229,7 +1230,7 @@ ton3=2.pow(n3/(2*6));
 		cutt_freq3=(freq*ton3*m).round(0.0000000000001);*/
 				/////fm///+SinOsc.ar(mag_x.rho,mag_x.theta,mul:mag_x.rho.reciprocal)
 
-osc1=Osc.ar(~w1.bufnum,pitch1*mag_x.reciprocal,mul:amp1*mag_x,phase:(phase+ph_x).wrap(2pi.neg,2pi));
+osc1=Osc.ar(~w1.bufnum,pitch1,mul:amp1,phase:(phase+ph_x).wrap(2pi.neg,2pi));
 
 					Out.ar(0,(LeakDC.ar(osc1,mul:env)));
 
@@ -1278,7 +1279,7 @@ mag_o=Cartesian(Select.kr(pl1,~magx_array.[pl2]), Select.kr(pl1,~magy_array.[pl2
 	sphere3=Spherical(Select.kr(pl1,~magz_array.[pl2]),Select.kr(pl1,~az),Select.kr(pl1,~el));
 	sphere=Spherical(mag_o.rho.round(0.00000001)/(2.sqrt),Select.kr(pl1,~az),Select.kr(pl1,~el));
 
-	xyz=Spherical(mult,sphere.theta,sphere.phi);
+	xyz=Spherical(mult,sphere2.theta,sphere.phi);
 	xyz_array=[xyz.x.round(0.000001),xyz.y.round(0.000001),xyz.z.round(0.000001)];
 
 v=Quaternion(0, xyz_array.[0], xyz_array.[1], xyz_array.[2]);
@@ -1307,14 +1308,13 @@ ton3=2.pow(n3/(2*6));
 	ph_y=Complex(sphere.x,sphere.z).theta;
 	ph_z=Complex(sphere.x,sphere.y).theta;
 
-	    amp1=(speed1*octave.reciprocal*m.reciprocal).round(0.0000000000001);
-		amp2=(speed2*octave.reciprocal*m.reciprocal).round(0.0000000000001);
-		amp3=(speed3*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+		    amp1=(ton1.reciprocal*speed1*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+		amp2=(ton2.reciprocal*speed2*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+		amp3=(ton3.reciprocal*speed3*octave.reciprocal*m.reciprocal).round(0.0000000000001);
 
-	pitch1=(freq1*m).round(0.0000000000001);
-	pitch2=(freq2*m).round(0.0000000000001);
-	pitch3=(freq3*m).round(0.0000000000001);
-
+	pitch1=(freq1*ton1*m).round(0.0000000000001);
+	pitch2=(freq2*ton2*m).round(0.0000000000001);
+	pitch3=(freq3*ton3*m).round(0.0000000000001);
 					///%2==0 simulates .even
 			phase=if(pl2%2==0,0.degrad,90.degrad);
 
@@ -1323,7 +1323,7 @@ ton3=2.pow(n3/(2*6));
 		cutt_freq3=(freq*ton3*m).round(0.0000000000001);*/
 				/////fm///+SinOsc.ar(mag_x.rho,mag_x.theta,mul:mag_x.rho.reciprocal)
 
-osc2=Osc.ar(~w2.bufnum,pitch2*mag_y.reciprocal,mul:amp2*mag_y,phase:(phase+ph_y).wrap(2pi.neg,2pi));
+osc2=Osc.ar(~w2.bufnum,pitch2,mul:amp2,phase:(phase+ph_y).wrap(2pi.neg,2pi));
 
 						Out.ar(0,(LeakDC.ar(osc2,mul:env)));
 
@@ -1370,7 +1370,7 @@ mag_o=Cartesian(Select.kr(pl1,~magx_array.[pl2]), Select.kr(pl1,~magy_array.[pl2
 	sphere3=Spherical(Select.kr(pl1,~magz_array.[pl2]),Select.kr(pl1,~az),Select.kr(pl1,~el));
 	sphere=Spherical(mag_o.rho.round(0.00000001)/(2.sqrt),Select.kr(pl1,~az),Select.kr(pl1,~el));
 
-	xyz=Spherical(mult,sphere.theta,sphere.phi);
+	xyz=Spherical(mult,sphere3.theta,sphere.phi);
 	xyz_array=[xyz.x.round(0.000001),xyz.y.round(0.000001),xyz.z.round(0.000001)];
 
 v=Quaternion(0, xyz_array.[0], xyz_array.[1], xyz_array.[2]);
@@ -1415,7 +1415,7 @@ ton3=2.pow(n3/(2*6));
 		cutt_freq3=(freq*ton3*m).round(0.0000000000001);*/
 				/////fm///+SinOsc.ar(mag_x.rho,mag_x.theta,mul:mag_x.rho.reciprocal)
 
-osc3=Osc.ar(~w3.bufnum,pitch3*mag_z.reciprocal,mul:amp3*mag_z,phase:(phase+ph_z).wrap(2pi.neg,2pi));
+osc3=Osc.ar(~w3.bufnum,pitch3,mul:amp3,phase:(phase+ph_z).wrap(2pi.neg,2pi));
 
 						Out.ar(0,(LeakDC.ar(osc3,mul:env)));
 
@@ -1427,6 +1427,7 @@ osc3=Osc.ar(~w3.bufnum,pitch3*mag_z.reciprocal,mul:amp3*mag_z,phase:(phase+ph_z)
 			};
 }).add;
 );
+	);
 
 
 ////////////list
