@@ -66,6 +66,11 @@ signal.plot;
 ~b = Buffer.loadCollection(s, ~a.getSetsAndMatrices);
 ///furhter on speaker setup can be geodesic octahedron 2nd order torus with 16 channels, and Rhombic triacontahedron with 32 vertices as 32 speaker channels
 )
+/////octahedron
+(
+	~a = VBAPSpeakerArray.new(3, [[0, 0], [90, 0], [180, 0], [90.neg, 0],[0,90],[0,90.neg]]);
+	~b = Buffer.loadCollection(s, ~a.getSetsAndMatrices);
+)
 
 (
 // 3D random
@@ -1110,11 +1115,11 @@ chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*amp2.rho/(2.sqrt), 
 
 	b=b+1;
 
-		Out.ar(0,VBAP.ar(4,IFFT(chainxx),~b.bufnum,
+		Out.ar(0,VBAP.ar(6,IFFT(chainxx),~b.bufnum,
 		Osc.ar(~t,phase1.rho,phase:az1.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
 			Osc.ar(~t,phase1.rho,phase:el1.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)));
 
-		Out.ar(0,VBAP.ar(4,IFFT(chainyy),~b.bufnum,
+		Out.ar(0,VBAP.ar(6,IFFT(chainyy),~b.bufnum,
 		Osc.ar(~t,phase2.rho,phase:az2.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
 			Osc.ar(~t,phase2.rho,phase:el2.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)));
 pl=pl+1;
@@ -1125,4 +1130,5 @@ pl=pl+1;
 
 
 Synth(\o_in);
+s.record(numChannels:3);
 s.record(numChannels:4)

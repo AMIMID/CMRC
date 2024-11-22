@@ -6,7 +6,7 @@ s.options.numWireBufs = 1024*4;
 s.options.numOutputBusChannels=6;
 s.options.numInputBusChannels=0;
 TempoClock.default.tempo_(0.5);
-s.options.memSize = 8192*32;
+s.options.memSize = 8192*64;
 s.options.blockSize = 64*8;
 s.options.maxNodes = 1024 * 16;
 s.options.sampleRate= 48000;
@@ -21,25 +21,28 @@ Buffer.freeAll;
 ~w2= Buffer.alloc(s,2048);
 ~w3= Buffer.alloc(s,2048);
 ~t= Buffer.alloc(s,2048);
-~a = VBAPSpeakerArray.new(3, [[0, 45], [180, 45], [90, 45.neg], [90.neg, 45.neg]]);
-~b = Buffer.loadCollection(s, ~a.getSetsAndMatrices);
 );
 
 ////////////////////////////////////speaker setup///other
 /*(
 // 3D///cube
-~a = VBAPSpeakerArray.new(3, [[45, 45], [135, 45], [135.neg, 45], [45.neg, 45],[45, 45.neg], [135, 45.neg], [135.neg, 45.neg], [45.neg, 45.neg]]);
+~a = VBAPSpeakerArray.new(3, [[0, 45], [90, 45], [180, 45], [90.neg, 45],[0, 45.neg], [90, 45.neg], [180, 45.neg], [90.neg, 45.neg]]);
 //0 up fl, 1 up bl, 2 up br, 3 up fr, 4 down fl, 5 down bl, 6 down br, 7 down fr
 ~b = Buffer.loadCollection(s, ~a.getSetsAndMatrices);
 ///furhter on speaker setup can be geodesic octahedron 2nd order torus with 16 channels, and Rhombic triacontahedron with 32 vertices as 32 speaker channels
-)
-
-(
-// 3D random
-~a = VBAPSpeakerArray.new(3, [[180.rand2, 90.rand2], [180.rand2, 90.rand2], [180.rand2, 90.rand2], [180.rand2, 90.rand2]]);
-~b = Buffer.loadCollection(s, ~a.getSetsAndMatrices);
 )*/
+~a = VBAPSpeakerArray.new(3, [[0, 45], [180, 45], [90, 45.neg], [90.neg, 45.neg]]);
+	~b = Buffer.loadCollection(s, ~a.getSetsAndMatrices);
 
+
+// 16
+	// ~a = VBAPSpeakerArray.new(3, [[0, 45], [90, 45], [180, 45], [90.neg, 45],
+	// 	[0, 0], [45, 0], [90, 0], [135, 0],[180.neg,0], [135.neg, 0], [90.neg, 0],[45.neg, 0],
+	// [0, 45.neg], [90, 45.neg], [180, 45.neg], [90.neg, 45.neg]]);
+	// //0 up fl, 1 up bl, 2 up br, 3 up fr, 4 down fl, 5 down bl, 6 down br, 7 down fr
+	// ~b = Buffer.loadCollection(s, ~a.getSetsAndMatrices);
+///furhter on speaker setup can be geodesic octahedron 2nd order torus with 16 channels, and Rhombic triacontahedron with 32 vertices as 32 speaker channels
+//)
 
 ///////////////////////////////////////////////////////arrays
 ///////fractal
@@ -1004,24 +1007,24 @@ rel3=Cartesian(v3.b.round(0.0001),v3.c.round(0.0001),v3.d.round(0.0001)).phi.rou
 ~magx6=(~magx6/(2.sqrt)).round(0.0000000000001);
 ~magy6=(~magy6/(2.sqrt)).round(0.0000000000001);
 ~magz6=(~magz6/(2.sqrt)).round(0.0000000000001);
-~magx7=(~magx1/(2.sqrt)).round(0.0000000000001);
-~magy7=(~magy1/(2.sqrt)).round(0.0000000000001);
-~magz7=(~magz1/(2.sqrt)).round(0.0000000000001);
-~magx8=(~magx2/(2.sqrt)).round(0.0000000000001);
-~magy8=(~magy2/(2.sqrt)).round(0.0000000000001);
-~magz8=(~magz2/(2.sqrt)).round(0.0000000000001);
-~magx9=(~magx3/(2.sqrt)).round(0.0000000000001);
-~magy9=(~magy3/(2.sqrt)).round(0.0000000000001);
-~magz9=(~magz3/(2.sqrt)).round(0.0000000000001);
-~magx10=(~magx4/(2.sqrt)).round(0.0000000000001);
-~magy10=(~magy4/(2.sqrt)).round(0.0000000000001);
-~magz10=(~magz4/(2.sqrt)).round(0.0000000000001);
-~magx11=(~magx5/(2.sqrt)).round(0.0000000000001);
-~magy11=(~magy5/(2.sqrt)).round(0.0000000000001);
-~magz11=(~magz5/(2.sqrt)).round(0.0000000000001);
-~magx12=(~magx6/(2.sqrt)).round(0.0000000000001);
-~magy12=(~magy6/(2.sqrt)).round(0.0000000000001);
-~magz12=(~magz6/(2.sqrt)).round(0.0000000000001);
+~magx7=(~magx7/(2.sqrt)).round(0.0000000000001);
+~magy7=(~magy7/(2.sqrt)).round(0.0000000000001);
+~magz7=(~magz7/(2.sqrt)).round(0.0000000000001);
+~magx8=(~magx8/(2.sqrt)).round(0.0000000000001);
+~magy8=(~magy8/(2.sqrt)).round(0.0000000000001);
+~magz8=(~magz8/(2.sqrt)).round(0.0000000000001);
+~magx9=(~magx9/(2.sqrt)).round(0.0000000000001);
+~magy9=(~magy9/(2.sqrt)).round(0.0000000000001);
+~magz9=(~magz9/(2.sqrt)).round(0.0000000000001);
+~magx10=(~magx10/(2.sqrt)).round(0.0000000000001);
+~magy10=(~magy10/(2.sqrt)).round(0.0000000000001);
+~magz10=(~magz10/(2.sqrt)).round(0.0000000000001);
+~magx11=(~magx11/(2.sqrt)).round(0.0000000000001);
+~magy11=(~magy11/(2.sqrt)).round(0.0000000000001);
+~magz11=(~magz11/(2.sqrt)).round(0.0000000000001);
+~magx12=(~magx12/(2.sqrt)).round(0.0000000000001);
+~magy12=(~magy12/(2.sqrt)).round(0.0000000000001);
+~magz12=(~magz12/(2.sqrt)).round(0.0000000000001);
 
 ~magx_array=[~magx1.round(0.00001),~magx2.round(0.00001),~magx3.round(0.00001),~magx4.round(0.00001),~magx5.round(0.00001),~magx6.round(0.00001),
 			~magx7.round(0.00001),~magx8.round(0.00001),~magx9.round(0.00001),~magx10.round(0.00001),~magx11.round(0.00001),~magx12.round(0.00001)];
@@ -1037,79 +1040,54 @@ rel3=Cartesian(v3.b.round(0.0001),v3.c.round(0.0001),v3.d.round(0.0001)).phi.rou
 {
 var dur=2,ph1,ph2,ph3,ph4,ph5,ph6,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0,pl6=0;
 var sph1,sph2,sph3,sph4,sph5,sph6,sph7,sph8,sph9;
-var n1,n2,n3,n4,n5,n6,n7,n8,n9,mult=12;
+var n1,n2,n3,n4,n5,n6,n7,n8,n9,mult=122;
 var mag1,mag2,mag3,mag4,mag5,mag6,mag7,mag8,mag9,rythm;
 var index1,index2,index3,index4,index5,index6,pl7=0,pl8=0,pl9=0,t1,t2,t3,t4,t5,t6;
 var pl10=0,pl11=0,pl12=0,pl13=0,pl14=0,pl15=0;
 
 ///////////////////////L-system algae variable a,b rules:a=ab b=a , n3 for n0=a
-rythm=[1,1/1,1,1,1/1];
+rythm=[1,1/2,1,1,1/2].mirror;
 
-~dur1 = (45*~time).collect{
-	ph1=Cartesian(~magx1.[pl1],~magy1.[pl1],~magz1.[pl1]).rho/(2.sqrt);
+~dur1 = (180*~time).collect{
+	ph1=~magx.[pl1];
 	index1=rythm.wrapAt(pl7);
 	pl7=pl7+1;
 	pl1=pl1+1;
-	ph1=(ph1*dur).round(1/32);
+	ph1=(ph1*dur).round(1/256);
 	t1=ph1*index1;
 
 	};
 
-~dur2 = (45*~time).collect{
-	ph2=Cartesian(~magx2.[pl2],~magy2.[pl2],~magz2.[pl2]).rho/(2.sqrt);
+~dur2 = (180*~time).collect{
+	ph2=~magy.[pl2];
 	index2=rythm.wrapAt(pl8);
 	pl8=pl8+1;
 	pl2=pl2+1;
-	ph2=(ph2*dur).round(1/32);
+	ph2=(ph2*dur).round(1/256);
 	t2=ph2*index2;
 	};
 
-~dur3 = (45*~time).collect{
-	ph3=Cartesian(~magx3.[pl6],~magy3.[pl3],~magz3.[pl3]).rho/(2.sqrt);
+~dur3 = (180*~time).collect{
+	ph3=~magz.[pl3];
 	index3=rythm.wrapAt(pl9);
 	pl9=pl9+1;
 	pl3=pl3+1;
-	ph3=(ph3*dur).round((1/32));
+	ph3=(ph3*dur).round(1/256);
 	t3=ph3*index3;
 	};
 
-~dur4 = (45*~time).collect{
-	ph4=Cartesian(~magx4.[pl10],~magy4.[pl10],~magz4.[pl10]).rho/(2.sqrt);
-	index4=rythm.wrapAt(pl11);
-	pl11=pl11+1;
-	pl10=pl10+1;
-	ph4=(ph4*dur).round((1/32));
-	t4=ph4*index4;
-	};
-~dur5 = (45*~time).collect{
-	ph5=Cartesian(~magx5.[pl12],~magy5.[pl12],~magz5.[pl12]).rho/(2.sqrt);
-	index5=rythm.wrapAt(pl13);
-	pl13=pl13+1;
-	pl12=pl12+1;
-	ph5=(ph5*dur).round((1/32));
-	t5=ph5*index5;
-	};
-
-~dur6 = (45*~time).collect{
-	ph6=Cartesian(~magx6.[pl14],~magy6.[pl14],~magz6.[pl14]).rho/(2.sqrt);
-	index6=rythm.wrapAt(pl9);
-	pl15=pl15+1;
-	pl14=pl14+1;
-	ph6=(ph6*dur).round((1/32));
-	t6=ph6*index6;
-	};
 }.value;
 		//////////////////////wavetable
 		{
 var signal,wt,m=0,amp;
 
-~level=64.round(1).collect{m=m+1;amp=m.reciprocal};
-~phase=64.collect{pi};
+~level=45.round(1).collect{m=m+1;amp=m.reciprocal};
+~phase=45.collect{pi};
 signal=Signal.sineFill(1024,~level,~phase);
 
 wt = signal.asWavetable;
 ~t.loadCollection(wt);
-//signal.plot;
+signal.plot;
 		}.value;
 (
 		{
@@ -1121,8 +1099,8 @@ var env,sig,wt,angle=0,level,levels,pl=1.neg;
 		angle=angle+1.degrad;
 				pl=pl+1;
 				//level=level;
-				//levels=level.rrand(exp(Complex(0,1)*angle+((360-(360/1.6180339887499))/1000).degrad.round(0.000001)).imag);
-			levels=level+(~magx.[pl]/100);
+				levels=level.rrand(exp(Complex(0,1)*angle+((360-(360/1.6180339887499))/100).degrad.round(0.000001)).imag);
+			//levels=level+(~magx.[pl]/100);
 };
 			env = Env(~levelsss,[1]);
 sig=env.asSignal(1024);
@@ -1139,9 +1117,8 @@ var env,sig,wt,angle=0,level,levels,pl=1.neg;
 		angle=angle+1.degrad;
 				pl=pl+1;
 		//level=level;
-	//levels=level.rrand(exp(Complex(0,1)*angle+((360-(360/1.6180339887499))/1000).degrad.round(0.000001)).imag);
-	//levels=level.rrand(exp(Complex(0,1)*angle+((360-(360/1.6180339887499))/10000).degrad).imag)+(~magy_array.[2].[pl]/10000);
-			levels=level+(~magy.[pl]/100);
+	levels=level.rrand(exp(Complex(0,1)*angle+((360-(360/1.6180339887499))/100).degrad.round(0.000001)).imag);
+		//	levels=level+(~magy.[pl]/100);
 };
 			env = Env(~levelssss,[1]);
 sig=env.asSignal(1024);
@@ -1158,9 +1135,8 @@ var env,sig,wt,angle=0,level,levels,pl=1.neg;
 		angle=angle+1.degrad;
 				pl=pl+1;
 			//	level=level;
-	///levels=level.rrand(exp(Complex(0,1)*angle+((360-(360/1.6180339887499))/1000).degrad.round(0.000001)).imag);
-		//levels=level.rrand(exp(Complex(0,1)*angle+((360-(360/1.6180339887499))/10000).degrad).imag)+(~magy_array.[2].[pl]/10000);
-			levels=level+(~magz.[pl]/100);
+	levels=level.rrand(exp(Complex(0,1)*angle+((360-(360/1.6180339887499))/100).degrad.round(0.000001)).imag);
+		//	levels=level+(~magz.[pl]/100);
 			};
 			env = Env(~levelsssss,[1]);
 sig=env.asSignal(1024);
@@ -1179,299 +1155,418 @@ sig.plot;
 
 	// Env(~levels,[0.04444]).plot;
 
-	//////notes
-	({
-		var angle=0;
-		~angle=(45*~time).collect{
-		angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
-		}
-		}.value
-	);
-
 /////synths////
+	(
 (
 SynthDef.new(\ospace1, {
-	arg angle_rot=0,octave=1,cutt=440,speed=1,decay=0.04444,pl1=0,mult=12;
-	var phase,osc1,osc2,osc3,sphere,mag_o,amp1,amp2,amp3,pl2=0;
-	var ton1,ton2,ton3,pl=0,rq1=1,rq2=1,rq3=1,cutt_freq1=1,cutt_freq2=1,cutt_freq3=1;
-	var fundamental=55*(speed.reciprocal);
-	var freq,m=1,bank1=8,bank2=1,pitch1,pitch2,pitch3,env,gate=1;
-	var v,i,j,k,q;
+	arg angle_rot1=0,angle_rot2=0,angle_rot3=0,angle_rot4=0,angle_rot5=0,pl1=0,mult=12,xr=1,yr=1,zr=1,gate=1;
+	var phase,osc1,osc2,osc3,sphere,mag_o,amp1,amp2,amp3,decay=0.04444,pl2=0,octave=2,envp;
+	var ton1,ton2,ton3,rq1=1,rq2=1,rq3=1,cutt_freq1=1,cutt_freq2=1,cutt_freq3=1;
+	var fundamental=110,fundamental1,fundamental2,fundamental3;
+	var freq1,freq2,freq3,m=1,pitch1,pitch2,pitch3,env,cutt=440;
+	var v0,v,v6,q1,q2,q3,q4,q5,axis;
 	var pitch;
-	var xyz,xyz_array,axis;
+	var xyz,xyz_array;
 	var n1,n2,n3;
 	var mag_x,mag_y,mag_z;
 	var sphere1,sphere2,sphere3;
+	var ph_x,ph_y,ph_z;
 
-env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:1/bank1);
-		//	env=EnvGen.ar(Env.perc(0.05,6,level:1/bank1),doneAction:2);
+	var wrappedOut1 = { |busArray, signalArray|
+	[busArray, signalArray].flop.do { |pair|
+		Out.ar(pair[0], pair[1])}};
+	var wrappedOut2 = { |busArray, signalArray|
+	[busArray, signalArray].flop.do { |pair|
+		Out.ar(pair[0], pair[1])}};
+	var wrappedOut3 = { |busArray, signalArray|
+	[busArray, signalArray].flop.do { |pair|
+		Out.ar(pair[0], pair[1])}};
+var out1 = NamedControl.kr(\out1, [0, 1, 2, 3]);  // multiple buses!
+	var out2 = NamedControl.kr(\out2, [0, 1, 2, 3]);  // multiple buses!
+	var out3 = NamedControl.kr(\out3, [0, 1, 2, 3]);  // multiple buses!
 
-freq=(fundamental*octave);
+				env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,6),gate:gate,doneAction:2,levelScale:0.1);
 
-bank1.do{
+//env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:0.1);
+			//	env=EnvGen.ar(Env.perc(0.05,6),doneAction:2,levelScale:0.1);
+fundamental1=fundamental;
+fundamental2=fundamental;
+fundamental3=fundamental;
+freq1=(fundamental1*octave);
+freq2=(fundamental2*octave);
+freq3=(fundamental3*octave);
 
-bank2.do{
 
-mag_o=Cartesian(Select.kr(pl1,~magx_array.[pl2]), Select.kr(pl1,~magy_array.[pl2]), Select.kr(pl1,~magz_array.[pl2]));
+6.do{
+mag_o=Cartesian(Select.kr(pl1,~magx_array.[pl2]), Select.kr(pl1,~magy_array.[pl2]),Select.kr(pl1,~magz_array.[pl2]));
 
-	sphere1=Spherical(mag_o.rho.round(0.0000000000001)/(2.sqrt),Select.kr(pl1,~az),Select.kr(pl1,~el));
-	sphere2=Spherical(mag_o.rho.round(0.0000000000001)/(2.sqrt),Select.kr(pl1,~az),Select.kr(pl1,~el));
-	sphere3=Spherical(mag_o.rho.round(0.0000000000001)/(2.sqrt),Select.kr(pl1,~az),Select.kr(pl1,~el));
+	sphere1=Spherical(mag_o.x,Select.kr(pl1,~az),Select.kr(pl1,~el));
+	sphere2=Spherical(mag_o.y,Select.kr(pl1,~az),Select.kr(pl1,~el));
+	sphere3=Spherical(mag_o.z,Select.kr(pl1,~az),Select.kr(pl1,~el));
 	sphere=Spherical(mag_o.rho.round(0.00000001)/(2.sqrt),Select.kr(pl1,~az),Select.kr(pl1,~el));
 
-	xyz=Spherical(1,sphere.theta,sphere.phi);
+	xyz=Spherical(mult,sphere.theta,sphere.phi);
 	xyz_array=[xyz.x.round(0.000001),xyz.y.round(0.000001),xyz.z.round(0.000001)];
 
-v=Quaternion(0, xyz_array.[0], xyz_array.[1], xyz_array.[2]);
-i=Quaternion(0, 0.57735026918963, 0, 0);
-j=Quaternion(0, 0,  0.57735026918963, 0);
-k=Quaternion(0, 0, 0,  0.57735026918963);
-axis=(i+j+k);
+v6=Quaternion(0, xyz_array.[0], xyz_array.[1], xyz_array.[2]);
+v0=Quaternion(0,0.57735026918963,0.57735026918963,0.57735026918963);
 
-q=((axis*exp(Complex(0,1)*angle_rot.degrad).imag)+exp(Complex(0,1)*angle_rot.degrad).real);
+axis=[xr,yr,zr].normalizeSum.sqrt;
+i=Quaternion(0, axis.[0], 0, 0);
+j=Quaternion(0, 0,  axis.[1], 0);
+k=Quaternion(0, 0, 0,  axis.[2]);
+v=(i+j+k);
 
-v=q*v*q.conjugate;
+q1=((v0*exp(Complex(0,1)*angle_rot1.degrad).imag)+exp(Complex(0,1)*angle_rot1.degrad).real);
+v=q1*v*q1.conjugate;
+q2=((v*exp(Complex(0,1)*angle_rot2.degrad).imag)+exp(Complex(0,1)*angle_rot2.degrad).real);
+v=q2*v*q2.conjugate;
+q3=((v*exp(Complex(0,1)*angle_rot3.degrad).imag)+exp(Complex(0,1)*angle_rot3.degrad).real);
+v=q3*v*q3.conjugate;
+q4=((v*exp(Complex(0,1)*angle_rot4.degrad).imag)+exp(Complex(0,1)*angle_rot4.degrad).real);
+v=q4*v*q4.conjugate;
+q5=((v*exp(Complex(0,1)*angle_rot5.degrad).imag)+exp(Complex(0,1)*angle_rot5.degrad).real);
+v6=q5*v6*q5.conjugate;
 
-	pitch=Cartesian(v.b,v.c,v.d);
 
-	n1=(pitch.x*mult).round(0.0000000000001); n2=(pitch.y*mult).round(0.0000000000001); n3=(pitch.z*mult).round(0.0000000000001);
+	pitch=Cartesian(v6.b,v6.c,v6.d);
+
+	n1=(pitch.x).round(1); n2=(pitch.y).round(1); n3=(pitch.z).round(1);
 
 ton1=2.pow(n1/(2*6));
 ton2=2.pow(n2/(2*6));
 ton3=2.pow(n3/(2*6));
-/*
-	mag_x=(Complex(sphere.y,sphere.z)*Select.kr(pl1,~magx_array.[pl2]));
-	mag_y=(Complex(sphere.x,sphere.z)*Select.kr(pl1,~magy_array.[pl2]));
-	mag_z=(Complex(sphere.x,sphere.y)*Select.kr(pl1,~magz_array.[pl2]));*/
-	mag_x=Complex(sphere.y,sphere.z).rho;
-	mag_y=Complex(sphere.x,sphere.z).rho;
-	mag_z=Complex(sphere.x,sphere.y).rho;
 
-	    amp1=(ton1.reciprocal*speed*octave.reciprocal*m.reciprocal).round(0.0000000000001);
-		amp2=(ton2.reciprocal*speed*octave.reciprocal*m.reciprocal).round(0.0000000000001);
-		amp3=(ton3.reciprocal*speed*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+	ph_x=Polar(sphere1.phi.bilin(0,90.degrad.neg,90.degrad,1,0,0),sphere1.theta.linlin(pi.neg,pi,2pi.neg,2pi));
+	ph_y=Polar(sphere2.phi.bilin(0,90.degrad.neg,90.degrad,1,0,0),sphere2.theta.linlin(pi.neg,pi,2pi.neg,2pi));
+	ph_z=Polar(sphere3.phi.bilin(0,90.degrad.neg,90.degrad,1,0,0),sphere3.theta.linlin(pi.neg,pi,2pi.neg,2pi));
+	mag_x=sphere1.rho;
+	mag_y=sphere2.rho;
+	mag_z=sphere3.rho;
 
-	pitch1=(freq*ton1*m).round(0.0000000000001);
-	pitch2=(freq*ton2*m).round(0.0000000000001);
-	pitch3=(freq*ton3*m).round(0.0000000000001);
+	    amp1=(ton1.reciprocal*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+		amp2=(ton2.reciprocal*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+		amp3=(ton3.reciprocal*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+
+	pitch1=(freq1*ton1*m).round(0.0000000000001);
+	pitch2=(freq2*ton2*m).round(0.0000000000001);
+	pitch3=(freq3*ton3*m).round(0.0000000000001);
 
 					///%2==0 simulates .even
 			phase=if(pl2%2==0,0.degrad,90.degrad);
 
-		cutt_freq1=(freq*ton1*m).round(0.0000000000001);
+		/*cutt_freq1=(freq*ton1*m).round(0.0000000000001);
 		cutt_freq2=(freq*ton2*m).round(0.0000000000001);
-		cutt_freq3=(freq*ton3*m).round(0.0000000000001);
+		cutt_freq3=(freq*ton3*m).round(0.0000000000001);*/
 				/////fm///+SinOsc.ar(mag_x.rho,mag_x.theta,mul:mag_x.rho.reciprocal)
+					envp=EnvGen.ar(Env.adsr(0.01,0.5,ton1/2,6,ton1),gate:gate,doneAction:2);
 
-osc1=Osc.ar(~w1.bufnum,pitch1,mul:amp1,phase:phase);
-osc2=Osc.ar(~w2.bufnum,pitch2,mul:amp2,phase:phase);
-osc3=Osc.ar(~w3.bufnum,pitch3,mul:amp3,phase:phase);
 
+osc1=Osc.ar(~w1.bufnum,pitch1,mul:amp1,phase:phase+ph_x.theta);
+
+
+		//wrappedOut1.value(out1,LeakDC.ar(osc1,mul:env));
 					Out.ar(0,LeakDC.ar(LeakDC.ar(osc1,mul:env)));
-					Out.ar(1,LeakDC.ar(LeakDC.ar(osc2,mul:env)));
-					Out.ar(2,LeakDC.ar(LeakDC.ar(osc3,mul:env)));
-
-
-			pl1=pl1+1;
-	};
-			pl2=pl2+1;
-		m=m+1;
-
+								m=m+1;
+					pl2=pl2+1;
 			};
+
 }).add;
 );
-	(
+(
 SynthDef.new(\ospace2, {
-	arg angle_rot=0,octave=1,cutt=440,speed=1,decay=0.04444,pl1=0,mult=12;
-	var phase,osc1,osc2,osc3,sphere,mag_o,amp1,amp2,amp3,pl2=0;
-	var ton1,ton2,ton3,pl=0,rq1=1,rq2=1,rq3=1,cutt_freq1=1,cutt_freq2=1,cutt_freq3=1;
-	var fundamental=55*(speed.reciprocal);
-	var freq,m=1,bank1=8,bank2=1,pitch1,pitch2,pitch3,env,gate=1;
-	var v,i,j,k,q;
+	arg angle_rot1=0,angle_rot2=0,angle_rot3=0,angle_rot4=0,angle_rot5=0,pl1=0,mult=12,xr=1,yr=1,zr=1,gate=1;
+	var phase,osc1,osc2,osc3,sphere,mag_o,amp1,amp2,amp3,decay=0.04444,pl2=0,octave=2,envp;
+	var ton1,ton2,ton3,rq1=1,rq2=1,rq3=1,cutt_freq1=1,cutt_freq2=1,cutt_freq3=1;
+	var fundamental=110,fundamental1,fundamental2,fundamental3;
+	var freq1,freq2,freq3,m=1,pitch1,pitch2,pitch3,env,cutt=440;
+	var v0,v,v6,q1,q2,q3,q4,q5,axis;
 	var pitch;
-	var xyz,xyz_array,axis;
+	var xyz,xyz_array;
 	var n1,n2,n3;
 	var mag_x,mag_y,mag_z;
 	var sphere1,sphere2,sphere3;
+	var ph_x,ph_y,ph_z;
 
-//env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:1/bank1);
-			env=EnvGen.ar(Env.perc(0.05,6,level:1/bank1),doneAction:2);
+	var wrappedOut1 = { |busArray, signalArray|
+	[busArray, signalArray].flop.do { |pair|
+		Out.ar(pair[0], pair[1])}};
+	var wrappedOut2 = { |busArray, signalArray|
+	[busArray, signalArray].flop.do { |pair|
+		Out.ar(pair[0], pair[1])}};
+	var wrappedOut3 = { |busArray, signalArray|
+	[busArray, signalArray].flop.do { |pair|
+		Out.ar(pair[0], pair[1])}};
+var out1 = NamedControl.kr(\out1, [0, 1, 2, 3]);  // multiple buses!
+	var out2 = NamedControl.kr(\out2, [0, 1, 2, 3]);  // multiple buses!
+	var out3 = NamedControl.kr(\out3, [0, 1, 2, 3]);  // multiple buses!
 
-freq=(fundamental*octave);
+				env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,6),gate:gate,doneAction:2,levelScale:0.1);
+//env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:0.1);
+				//env=EnvGen.ar(Env.perc(0.05,6),doneAction:2,levelScale:0.1);
+fundamental1=fundamental;
+fundamental2=fundamental;
+fundamental3=fundamental;
+freq1=(fundamental1*octave);
+freq2=(fundamental2*octave);
+freq3=(fundamental3*octave);
 
-bank1.do{
 
-bank2.do{
+6.do{
+mag_o=Cartesian(Select.kr(pl1,~magx_array.[pl2]), Select.kr(pl1,~magy_array.[pl2]),Select.kr(pl1,~magz_array.[pl2]));
 
-mag_o=Cartesian(Select.kr(pl1,~magx_array.[pl2]), Select.kr(pl1,~magy_array.[pl2]), Select.kr(pl1,~magz_array.[pl2]));
-
-	sphere1=Spherical(mag_o.rho.round(0.0000000000001)/(2.sqrt),Select.kr(pl1,~az),Select.kr(pl1,~el));
-	sphere2=Spherical(mag_o.rho.round(0.0000000000001)/(2.sqrt),Select.kr(pl1,~az),Select.kr(pl1,~el));
-	sphere3=Spherical(mag_o.rho.round(0.0000000000001)/(2.sqrt),Select.kr(pl1,~az),Select.kr(pl1,~el));
+	sphere1=Spherical(mag_o.x,Select.kr(pl1,~az),Select.kr(pl1,~el));
+	sphere2=Spherical(mag_o.y,Select.kr(pl1,~az),Select.kr(pl1,~el));
+	sphere3=Spherical(mag_o.z,Select.kr(pl1,~az),Select.kr(pl1,~el));
 	sphere=Spherical(mag_o.rho.round(0.00000001)/(2.sqrt),Select.kr(pl1,~az),Select.kr(pl1,~el));
 
-	xyz=Spherical(1,sphere.theta,sphere.phi);
+	xyz=Spherical(mult,sphere.theta,sphere.phi);
 	xyz_array=[xyz.x.round(0.000001),xyz.y.round(0.000001),xyz.z.round(0.000001)];
 
-v=Quaternion(0, xyz_array.[0], xyz_array.[1], xyz_array.[2]);
-i=Quaternion(0, 0.57735026918963, 0, 0);
-j=Quaternion(0, 0,  0.57735026918963, 0);
-k=Quaternion(0, 0, 0,  0.57735026918963);
-axis=(i+j+k);
+v6=Quaternion(0, xyz_array.[0], xyz_array.[1], xyz_array.[2]);
+v0=Quaternion(0,0.57735026918963,0.57735026918963,0.57735026918963);
 
-q=((axis*exp(Complex(0,1)*angle_rot.degrad).imag)+exp(Complex(0,1)*angle_rot.degrad).real);
+axis=[xr,yr,zr].normalizeSum.sqrt;
+i=Quaternion(0, axis.[0], 0, 0);
+j=Quaternion(0, 0,  axis.[1], 0);
+k=Quaternion(0, 0, 0,  axis.[2]);
+v=(i+j+k);
 
-v=q*v*q.conjugate;
+q1=((v0*exp(Complex(0,1)*angle_rot1.degrad).imag)+exp(Complex(0,1)*angle_rot1.degrad).real);
+v=q1*v*q1.conjugate;
+q2=((v*exp(Complex(0,1)*angle_rot2.degrad).imag)+exp(Complex(0,1)*angle_rot2.degrad).real);
+v=q2*v*q2.conjugate;
+q3=((v*exp(Complex(0,1)*angle_rot3.degrad).imag)+exp(Complex(0,1)*angle_rot3.degrad).real);
+v=q3*v*q3.conjugate;
+q4=((v*exp(Complex(0,1)*angle_rot4.degrad).imag)+exp(Complex(0,1)*angle_rot4.degrad).real);
+v=q4*v*q4.conjugate;
+q5=((v*exp(Complex(0,1)*angle_rot5.degrad).imag)+exp(Complex(0,1)*angle_rot5.degrad).real);
+v6=q5*v6*q5.conjugate;
 
-	pitch=Cartesian(v.b,v.c,v.d);
+	pitch=Cartesian(v6.b,v6.c,v6.d);
 
-	n1=(pitch.x*mult).round(0.0000000000001); n2=(pitch.y*mult).round(0.0000000000001); n3=(pitch.z*mult).round(0.0000000000001);
+	n1=(pitch.x).round(1); n2=(pitch.y).round(1); n3=(pitch.z).round(1);
 
 ton1=2.pow(n1/(2*6));
 ton2=2.pow(n2/(2*6));
 ton3=2.pow(n3/(2*6));
-/*
-	mag_x=(Complex(sphere.y,sphere.z)*Select.kr(pl1,~magx_array.[pl2]));
-	mag_y=(Complex(sphere.x,sphere.z)*Select.kr(pl1,~magy_array.[pl2]));
-	mag_z=(Complex(sphere.x,sphere.y)*Select.kr(pl1,~magz_array.[pl2]));*/
-	mag_x=Complex(sphere.y,sphere.z).rho;
-	mag_y=Complex(sphere.x,sphere.z).rho;
-	mag_z=Complex(sphere.x,sphere.y).rho;
 
-	    amp1=(ton1.reciprocal*speed*octave.reciprocal*m.reciprocal).round(0.0000000000001);
-		amp2=(ton2.reciprocal*speed*octave.reciprocal*m.reciprocal).round(0.0000000000001);
-		amp3=(ton3.reciprocal*speed*octave.reciprocal*m.reciprocal).round(0.0000000000001);
 
-	pitch1=(freq*ton1*m).round(0.0000000000001);
-	pitch2=(freq*ton2*m).round(0.0000000000001);
-	pitch3=(freq*ton3*m).round(0.0000000000001);
+	ph_x=Polar(sphere1.phi.bilin(0,90.degrad.neg,90.degrad,1,0,0),sphere1.theta.linlin(pi.neg,pi,2pi.neg,2pi));
+	ph_y=Polar(sphere2.phi.bilin(0,90.degrad.neg,90.degrad,1,0,0),sphere2.theta.linlin(pi.neg,pi,2pi.neg,2pi));
+	ph_z=Polar(sphere3.phi.bilin(0,90.degrad.neg,90.degrad,1,0,0),sphere3.theta.linlin(pi.neg,pi,2pi.neg,2pi));
+	mag_x=sphere1.rho;
+	mag_y=sphere2.rho;
+	mag_z=sphere3.rho;
+
+	    amp1=(ton1.reciprocal*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+		amp2=(ton2.reciprocal*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+		amp3=(ton3.reciprocal*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+
+	pitch1=(freq1*ton1*m).round(0.0000000000001);
+	pitch2=(freq2*ton2*m).round(0.0000000000001);
+	pitch3=(freq3*ton3*m).round(0.0000000000001);
 
 					///%2==0 simulates .even
 			phase=if(pl2%2==0,0.degrad,90.degrad);
 
-		cutt_freq1=(freq*ton1*m).round(0.0000000000001);
+		/*cutt_freq1=(freq*ton1*m).round(0.0000000000001);
 		cutt_freq2=(freq*ton2*m).round(0.0000000000001);
-		cutt_freq3=(freq*ton3*m).round(0.0000000000001);
+		cutt_freq3=(freq*ton3*m).round(0.0000000000001);*/
 				/////fm///+SinOsc.ar(mag_x.rho,mag_x.theta,mul:mag_x.rho.reciprocal)
+					envp=EnvGen.ar(Env.adsr(0.01,0.5,ton2/2,6,ton2),gate:gate,doneAction:2);
 
-osc1=Osc.ar(~w1.bufnum,pitch1,mul:amp1,phase:phase);
-osc2=Osc.ar(~w2.bufnum,pitch2,mul:amp2,phase:phase);
-osc3=Osc.ar(~w3.bufnum,pitch3,mul:amp3,phase:phase);
+osc2=Osc.ar(~w2.bufnum,pitch2,mul:amp2,phase:phase+ph_y.theta);
 
-					Out.ar(0,LeakDC.ar(LeakDC.ar(osc1,mul:env)));
+		//wrappedOut2.value(out2,LeakDC.ar(osc2,mul:env));
 					Out.ar(1,LeakDC.ar(LeakDC.ar(osc2,mul:env)));
-					Out.ar(2,LeakDC.ar(LeakDC.ar(osc3,mul:env)));
-
-			pl1=pl1+1;
-	};
-			pl2=pl2+1;
-		m=m+1;
-
+									m=m+1;
+					pl2=pl2+1;
 			};
+
 }).add;
 );
+(
+SynthDef.new(\ospace3, {
+	arg angle_rot1=0,angle_rot2=0,angle_rot3=0,angle_rot4=0,angle_rot5=0,pl1=0,mult=12,xr=1,yr=1,zr=1,gate=1;
+	var phase,osc1,osc2,osc3,sphere,mag_o,amp1,amp2,amp3,decay=0.04444,pl2=0,octave=2,envp;
+	var ton1,ton2,ton3,rq1=1,rq2=1,rq3=1,cutt_freq1=1,cutt_freq2=1,cutt_freq3=1;
+	var fundamental=110,fundamental1,fundamental2,fundamental3;
+	var freq1,freq2,freq3,m=1,pitch1,pitch2,pitch3,env,cutt=440;
+	var v0,v,v6,q1,q2,q3,q4,q5,axis;
+	var pitch;
+	var xyz,xyz_array;
+	var n1,n2,n3;
+	var mag_x,mag_y,mag_z;
+	var sphere1,sphere2,sphere3;
+	var ph_x,ph_y,ph_z;
 
+	var wrappedOut1 = { |busArray, signalArray|
+	[busArray, signalArray].flop.do { |pair|
+		Out.ar(pair[0], pair[1])}};
+	var wrappedOut2 = { |busArray, signalArray|
+	[busArray, signalArray].flop.do { |pair|
+		Out.ar(pair[0], pair[1])}};
+	var wrappedOut3 = { |busArray, signalArray|
+	[busArray, signalArray].flop.do { |pair|
+		Out.ar(pair[0], pair[1])}};
+var out1 = NamedControl.kr(\out1, [0, 1, 2, 3]);  // multiple buses!
+	var out2 = NamedControl.kr(\out2, [0, 1, 2, 3]);  // multiple buses!
+	var out3 = NamedControl.kr(\out3, [0, 1, 2, 3]);  // multiple buses!
+
+				env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,6),gate:gate,doneAction:2,levelScale:0.1);
+//env=EnvGen.ar(Env(~levels,[decay],4.neg),doneAction:2,levelScale:0.1);
+			//	env=EnvGen.ar(Env.perc(0.05,6),doneAction:2,levelScale:0.1);
+
+fundamental1=fundamental;
+fundamental2=fundamental;
+fundamental3=fundamental;
+freq1=(fundamental1*octave);
+freq2=(fundamental2*octave);
+freq3=(fundamental3*octave);
+
+6.do{
+mag_o=Cartesian(Select.kr(pl1,~magx_array.[pl2]), Select.kr(pl1,~magy_array.[pl2]),Select.kr(pl1,~magz_array.[pl2]));
+
+	sphere1=Spherical(mag_o.x,Select.kr(pl1,~az),Select.kr(pl1,~el));
+	sphere2=Spherical(mag_o.y,Select.kr(pl1,~az),Select.kr(pl1,~el));
+	sphere3=Spherical(mag_o.z,Select.kr(pl1,~az),Select.kr(pl1,~el));
+	sphere=Spherical(mag_o.rho.round(0.00000001)/(2.sqrt),Select.kr(pl1,~az),Select.kr(pl1,~el));
+
+	xyz=Spherical(mult,sphere.theta,sphere.phi);
+	xyz_array=[xyz.x.round(0.000001),xyz.y.round(0.000001),xyz.z.round(0.000001)];
+
+v6=Quaternion(0, xyz_array.[0], xyz_array.[1], xyz_array.[2]);
+v0=Quaternion(0,0.57735026918963,0.57735026918963,0.57735026918963);
+
+axis=[xr,yr,zr].normalizeSum.sqrt;
+i=Quaternion(0, axis.[0], 0, 0);
+j=Quaternion(0, 0,  axis.[1], 0);
+k=Quaternion(0, 0, 0,  axis.[2]);
+v=(i+j+k);
+
+q1=((v0*exp(Complex(0,1)*angle_rot1.degrad).imag)+exp(Complex(0,1)*angle_rot1.degrad).real);
+v=q1*v*q1.conjugate;
+q2=((v*exp(Complex(0,1)*angle_rot2.degrad).imag)+exp(Complex(0,1)*angle_rot2.degrad).real);
+v=q2*v*q2.conjugate;
+q3=((v*exp(Complex(0,1)*angle_rot3.degrad).imag)+exp(Complex(0,1)*angle_rot3.degrad).real);
+v=q3*v*q3.conjugate;
+q4=((v*exp(Complex(0,1)*angle_rot4.degrad).imag)+exp(Complex(0,1)*angle_rot4.degrad).real);
+v=q4*v*q4.conjugate;
+q5=((v*exp(Complex(0,1)*angle_rot5.degrad).imag)+exp(Complex(0,1)*angle_rot5.degrad).real);
+v6=q5*v6*q5.conjugate;
+
+	pitch=Cartesian(v6.b,v6.c,v6.d);
+
+	n1=(pitch.x).round(1); n2=(pitch.y).round(1); n3=(pitch.z).round(1);
+
+ton1=2.pow(n1/(2*6));
+ton2=2.pow(n2/(2*6));
+ton3=2.pow(n3/(2*6));
+
+
+	ph_x=Polar(sphere1.phi.bilin(0,90.degrad.neg,90.degrad,1,0,0),sphere1.theta.linlin(pi.neg,pi,2pi.neg,2pi));
+	ph_y=Polar(sphere2.phi.bilin(0,90.degrad.neg,90.degrad,1,0,0),sphere2.theta.linlin(pi.neg,pi,2pi.neg,2pi));
+	ph_z=Polar(sphere3.phi.bilin(0,90.degrad.neg,90.degrad,1,0,0),sphere3.theta.linlin(pi.neg,pi,2pi.neg,2pi));
+	mag_x=sphere1.rho;
+	mag_y=sphere2.rho;
+	mag_z=sphere3.rho;
+
+	    amp1=(ton1.reciprocal*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+		amp2=(ton2.reciprocal*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+		amp3=(ton3.reciprocal*octave.reciprocal*m.reciprocal).round(0.0000000000001);
+
+	pitch1=(freq1*ton1*m).round(0.0000000000001);
+	pitch2=(freq2*ton2*m).round(0.0000000000001);
+	pitch3=(freq3*ton3*m).round(0.0000000000001);
+
+					///%2==0 simulates .even
+			phase=if(pl2%2==0,0.degrad,90.degrad);
+
+		/*cutt_freq1=(freq*ton1*m).round(0.0000000000001);
+		cutt_freq2=(freq*ton2*m).round(0.0000000000001);
+		cutt_freq3=(freq*ton3*m).round(0.0000000000001);*/
+				/////fm///+SinOsc.ar(mag_x.rho,mag_x.theta,mul:mag_x.rho.reciprocal)
+					envp=EnvGen.ar(Env.adsr(0.01,0.5,ton3/2,6,ton3),gate:gate,doneAction:2);
+
+osc3=Osc.ar(~w3.bufnum,pitch3,mul:amp3,phase:phase+ph_z.theta);
+
+	//wrappedOut3.value(out3,LeakDC.ar(osc3,mul:env));
+					Out.ar(2,LeakDC.ar(LeakDC.ar(osc3,mul:env)));
+				m=m+1;
+					pl2=pl2+1;
+			};
+
+}).add;
+);
+);
 
 ////////////list
 	({
 		var n=1.neg;
-		~list=(720*~time).collect{
+		~list1=(720*~time).collect{
 		n=n+1;
 		}
 		}.value
 	);
 
+
+		//////notes
+	({
+		var angle=0;
+		~angle=(720*~time).collect{
+		angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
+		}
+		}.value;
+	~angle=~angle/2;
+	);
+
 //////////pattern for mobius strib of sequential or parallel play of directions
 (
 ~aa=Pdef(\1, Pbind(\instrument, \ospace1,
-	\dur,Pseq(~dur1.mirror,1),
-		//\octave,Prand([1,2,4],inf),
-			\pl1,Pxrand(~list,inf),
-	\angle_rot,Pseq(~angle,inf),
-	\speed,Prand([1,3/4,2/3,1/2],inf);
+	\dur,Pseq(~dur1,1),
+			\mult,Prand([10,20,30,40],inf),
+			\gate,Pseq([1,0,1,1,0,1,0,1,1,0,1,1,1,0],inf),///l system
+			\pl1,Pseq(~list1,inf),
+		\xr,Pseq(~magx,inf),
+		\yr,Pseq(~magy,inf),
+		\zr,Pseq(~magz,inf),
+	\angle_rot1,Prand(~angle,inf),
+	\angle_rot2,Prand(~angle,inf),
+	\angle_rot3,Prand(~angle,inf),
+	\angle_rot4,Prand(~angle,inf),
+	\angle_rot5,Prand(~angle,inf),
 ));
-~bb=Pdef(\2, Pbind(\instrument, \ospace1,
-	\dur,Pseq(~dur2.mirror,1),
-		//	\octave,Prand([1,2,4],inf),
-			\pl1,Pxrand(~list,inf),
-	\angle_rot,Pseq(~angle,inf),
-	\speed,Prand([1,3/4,2/3,1/2],inf);
+~bb=Pdef(\2, Pbind(\instrument, \ospace2,
+	\dur,Pseq(~dur2,1),
+			\mult,Prand([10,20,30,40],inf),
+			\gate,Pseq([1,0,1,1,0,1,0,1,1,0,1,1,1,0],inf),
+			\pl1,Pseq(~list1,inf),
+		\xr,Pseq(~magx,inf),
+		\yr,Pseq(~magy,inf),
+		\zr,Pseq(~magz,inf),
+		\angle_rot1,Prand(~angle,inf),
+	\angle_rot2,Prand(~angle,inf),
+	\angle_rot3,Prand(~angle,inf),
+	\angle_rot4,Prand(~angle,inf),
+	\angle_rot5,Prand(~angle,inf),
 ));
-~cc=Pdef(\3, Pbind(\instrument, \ospace1,
-	\dur,Pseq(~dur3.mirror,1),
-		//	\octave,Prand([1,2,4],inf),
-			\pl1,Pxrand(~list,inf),
-	\angle_rot,Pseq(~angle,inf),
-	\speed,Prand([1,3/4,2/3,1/2],inf);
-));
-~dd=Pdef(\4, Pbind(\instrument, \ospace1,
-	\dur,Pseq(~dur4.mirror,1),
-		//	\octave,Prand([1,2,4],inf),
-			\pl1,Pxrand(~list,inf),
-	\angle_rot,Pseq(~angle,inf),
-	\speed,Prand([1,3/4,2/3,1/2],inf);
-));
-~ee=Pdef(\5, Pbind(\instrument, \ospace1,
-	\dur,Pseq(~dur5.mirror,1),
-	//	\octave,Prand([1,2,4],inf),
-			\pl1,Pxrand(~list,inf),
-	\angle_rot,Pseq(~angle,inf),
-	\speed,Prand([1,3/4,2/3,1/2],inf);
-));
-~ff=Pdef(\6, Pbind(\instrument, \ospace1,
-	\dur,Pseq(~dur6.mirror,1),
-	//	\octave,Prand([1,2,4],inf),
-			\pl1,Pxrand(~list,inf),
-	\angle_rot,Pseq(~angle,inf),
-	\speed,Prand([1,3/4,2/3,1/2],inf);
-));
-	);
-	(
-~aaa=Pdef(\7, Pbind(\instrument, \ospace2,
-	\dur,Pseq(~dur1.mirror,1),
-		//\octave,Prand([1,2,4],inf),
-			\pl1,Pxrand(~list,inf),
-	\angle_rot,Pseq(~angle,inf),
-	\speed,Prand([1,3/4,2/3,1/2],inf);
-));
-~bbb=Pdef(\8, Pbind(\instrument, \ospace2,
-	\dur,Pseq(~dur2.mirror,1),
-		//	\octave,Prand([1,2,4],inf),
-			\pl1,Pxrand(~list,inf),
-	\angle_rot,Pseq(~angle,inf),
-	\speed,Prand([1,3/4,2/3,1/2],inf);
-));
-~ccc=Pdef(\9, Pbind(\instrument, \ospace2,
-	\dur,Pseq(~dur3.mirror,1),
-		//	\octave,Prand([1,2,4],inf),
-			\pl1,Pxrand(~list,inf),
-	\angle_rot,Pseq(~angle,inf),
-	\speed,Prand([1,3/4,2/3,1/2],inf);
-));
-~ddd=Pdef(\10, Pbind(\instrument, \ospace2,
-	\dur,Pseq(~dur4.mirror,1),
-		//	\octave,Prand([1,2,4],inf),
-			\pl1,Pxrand(~list,inf),
-	\angle_rot,Pseq(~angle,inf),
-	\speed,Prand([1,3/4,2/3,1/2],inf);
-));
-~eee=Pdef(\11, Pbind(\instrument, \ospace2,
-	\dur,Pseq(~dur5.mirror,1),
-	//	\octave,Prand([1,2,4],inf),
-			\pl1,Pxrand(~list,inf),
-	\angle_rot,Pseq(~angle,inf),
-	\speed,Prand([1,3/4,2/3,1/2],inf);
-));
-~fff=Pdef(\12, Pbind(\instrument, \ospace2,
-	\dur,Pseq(~dur6.mirror,1),
-	//	\octave,Prand([1,2,4],inf),
-			\pl1,Pxrand(~list,inf),
-	\angle_rot,Pseq(~angle,inf),
-	\speed,Prand([1,3/4,2/3,1/2],inf);
+~cc=Pdef(\3, Pbind(\instrument, \ospace3,
+	\dur,Pseq(~dur3,1),
+		\mult,Prand([10,20,30,40],inf),
+			\gate,Pseq([1,0,1,1,0,1,0,1,1,0,1,1,1,0],inf),
+			\pl1,Pseq(~list1,inf),
+				\xr,Pseq(~magx,inf),
+		\yr,Pseq(~magy,inf),
+		\zr,Pseq(~magz,inf),
+		\angle_rot1,Prand(~angle,inf),
+	\angle_rot2,Prand(~angle,inf),
+	\angle_rot3,Prand(~angle,inf),
+	\angle_rot4,Prand(~angle,inf),
+	\angle_rot5,Prand(~angle,inf),
 ));
 	);
-	TempoClock.default.tempo_(1);
-/////with tempo 1 and time 1 overall duration of a is 2.08 min
+	TempoClock.default.tempo_(1/1);
 
 //s.record(numChannels:4);
 	/////////////////////scales
@@ -1486,40 +1581,34 @@ Tdef.new(\h,{
 //s.record(numChannels:4);
 			(1).wait;
 ~aa.play;
-			~aaa.play;
-(120).wait;
 ~bb.play;
-(120).wait;
 ~cc.play;
-(120).wait;
-~dd.play;
-(120).wait;
-~ee.play;
-(120).wait;
-~ff.play;
-(120).wait;
+s.record(numChannels:4);
 			(1).wait;
 //s.stopRecording
 //	})
 })
 );
 
-	//Tdef(\h).stop;
+
+
+//Tdef(\h).stop;
 //Tdef(\h).play;
 //Tdef(\h).clear;
+
 }
 )
 
-	/////wavetables
-/*Buffer.freeAll
+
+	/////wavetablesBuffer.freeAll
 
 (
-~c1 = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Music/SuperCollider Recordings/b-formtat.wav",channels:0);
-~c2 =Buffer.readChannel(s,"/Users/petrostatsiopoulos/Music/SuperCollider Recordings/b-formtat.wav",channels:1);
-~c3 = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Music/SuperCollider Recordings/b-formtat.wav",channels:2);
+~c1 = Buffer.readChannel(s,,channels:0);
+~c2 =Buffer.readChannel(s,,channels:1);
+~c3 = Buffer.readChannel(s,,channels:2);
 //~c3 = Buffer.read(s,);
 //~c4 = Buffer.read(s,);
-)*/
+)
 
 (
 SynthDef.new(\player,{
@@ -1527,15 +1616,18 @@ SynthDef.new(\player,{
 	var env;
 	var sig1, sig2, sig3, sig4;
 
-			sig1=InFeedback.ar(0);
-			sig2=InFeedback.ar(1);
-			sig3=InFeedback.ar(2);
+			//sig1=InFeedback.ar(0);
+			//sig2=InFeedback.ar(1);
+			//sig3=InFeedback.ar(2);
 
-	//sig3=PlayBuf.ar(1, ~c3.bufnum, BufRateScale.kr(~c2), loop: 1, doneAction:2);
+	sig1=PlayBuf.ar(1, ~c1.bufnum, BufRateScale.kr(~c1.bufnum), loop: 0, doneAction:2);
+	sig2=PlayBuf.ar(1, ~c2.bufnum, BufRateScale.kr(~c3.bufnum), loop: 0, doneAction:2);
+    sig3=PlayBuf.ar(1, ~c3.bufnum, BufRateScale.kr(~c3.bufnum), loop: 0, doneAction:2);
 
-	~a = Amplitude.ar(sig1, 0.01, 0.25,3).round(0.00001).poll;SendReply.ar(Impulse.ar(100), '/a', ~a);
-	~b = Amplitude.ar(sig2, 0.01, 0.25,3).round(0.00001);SendReply.ar(Impulse.ar(100), '/b', ~b);
-	~c = Amplitude.ar(sig3, 0.01, 0.25,3).round(0.00001);SendReply.ar(Impulse.ar(100), '/c', ~c);
+
+	~a = Amplitude.ar(sig1, 0.01, 0.25,5).round(0.00001).poll;SendReply.ar(Impulse.ar(100), '/a', ~a);
+	~b = Amplitude.ar(sig2, 0.01, 0.25,5).round(0.00001);SendReply.ar(Impulse.ar(100), '/b', ~b);
+	~c = Amplitude.ar(sig3, 0.01, 0.25,5).round(0.00001);SendReply.ar(Impulse.ar(100), '/c', ~c);
 
 Out.ar(3,sig1*1);
 Out.ar(4,sig2*1);
@@ -1550,9 +1642,7 @@ Synth.new(\player);
 
 
 (
-var m=600;
 var run = true;
-var ot=0.degrad;
 
 OSCdef(\amp1, { |msg|
 	~a = msg[3];
@@ -1573,16 +1663,17 @@ OSCdef(\amp3, { |msg|
 
 w = Window.new("color", Rect(800,40, 400, 400)).front;
 
-~v = UserView.new(w,Rect(0,0,400,400)).background_(Color.black);
-~v.refresh;
-
+~v = UserView.new(w,Rect(0,0,400,400)).background_(Color.white);
 ~v.animate;
 ~v.drawFunc ={
 Pen.translate(400,400);
-	~v.background_(Color.new(~a,~b,~c));
+
+	Pen.color= Color.new(~a,~b,~c);
+	Pen.addRect(Rect.new(0,0,400,400));
+	    Pen.fillStroke;
     ~v.refresh;
 
 };
-{ while { run } {~v.background_(Color.black); ~v.refresh; (1/1000).wait } }.fork(AppClock);
+{ while { run } {~v.background_(Color.new(~a,~b,~c)); ~v.refresh; (1/1000).wait } }.fork(AppClock);
 
 )
