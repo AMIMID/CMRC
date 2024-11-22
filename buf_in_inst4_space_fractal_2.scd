@@ -1,6 +1,6 @@
 (
 s.options.numWireBufs = 1024*4;
-s.options.numOutputBusChannels=4;
+s.options.numOutputBusChannels=6;
 s.options.numInputBusChannels=2;
 TempoClock.default.tempo_(1);
 s.options.memSize = 8192*64;
@@ -81,11 +81,11 @@ signal.plot;
 //////////arrays
 (
 /////////tetrahedron
-(
+/*(
 // 3D
 ~a = VBAPSpeakerArray.new(3, [[0, 45], [180, 45], [90, 45.neg], [90.neg, 45.neg]]);
 ~b = Buffer.loadCollection(s, ~a.getSetsAndMatrices);
-);
+);*/
 		~time=8;
 {
 var c,cc,angle=0,c_real,c_imag,z;
@@ -1104,7 +1104,7 @@ SynthDef.new(\o_in, {
 			az2=~az.reverse.[pl];
 		el2=~el.reverse.[pl];
 amp1=Cartesian(~magx[pl],~magy.[pl],~magz.[pl]);
-amp2=Cartesian(~magx.[pl].reverse,~magy.[pl].reverse,~magz.[pl].reverse);
+amp2=Cartesian(~magx.reverse.[pl],~magy.reverse.[pl],~magz.reverse.[pl]);
 
 		phase1=Polar(amp1.phi.bilin(0,90.degrad.neg,90.degrad,1,0,0),amp1.theta.linlin(pi.neg,pi,2pi.neg,2pi));
 	phase2=Polar(amp2.phi.bilin(0,90.degrad.neg,90.degrad,1,0,0),amp2.theta.linlin(pi.neg,pi,2pi.neg,2pi));
