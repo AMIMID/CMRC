@@ -1062,6 +1062,14 @@ s.record(numChannels:4)
 // 	};
 // }).add;
 // )
+	({
+		var angle=0;
+		~angle=(720*~time).collect{
+		angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
+		}
+		}.value;
+	~angle=~angle/2;
+	);
 
 (
 SynthDef.new(\o_in, {
@@ -1097,8 +1105,8 @@ amp2=Cartesian(~magx.[pl].reverse,~magy.[pl].reverse,~magz.[pl].reverse);
 	phase2=Polar(amp2.phi.bilin(0,90.degrad.neg,90.degrad,1,0,0),amp2.theta.linlin(pi.neg,pi,2pi.neg,2pi));
 
 
-chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*amp1.rho/(2.sqrt), exp(Complex(0,1)*(phase+phase1.theta)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*amp2.rho/(2.sqrt), exp(Complex(0,1)*(phase+phase2.theta)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*amp1.rho/(2.sqrt), exp(Complex(0,1)*(phase+~angle.[pl].degrad)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*amp2.rho/(2.sqrt), exp(Complex(0,1)*(phase+~angle.[pl2].degrad)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 	b=b+1;
 
