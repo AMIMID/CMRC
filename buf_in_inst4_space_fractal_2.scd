@@ -1111,17 +1111,13 @@ amp2=Cartesian(~magx.reverse.[pl],~magy.reverse.[pl],~magz.reverse.[pl]);
 
 
 chainxx = chainx.pvcollect(frames, {|mag, phase, index| [mag*amp1.rho/(2.sqrt), exp(Complex(0,1)*(phase+~angle.[pl].degrad)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
-chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*amp2.rho/(2.sqrt), exp(Complex(0,1)*(phase+~angle.[pl2].degrad)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
+chainyy = chainy.pvcollect(frames, {|mag, phase, index| [mag*amp2.rho/(2.sqrt), exp(Complex(0,1)*(phase+~angle.[pl].degrad)).theta]; }, frombin: b, tobin: b, zeroothers: 1);
 
 	b=b+1;
 
-		Out.ar(0,VBAP.ar(6,IFFT(chainxx),~b.bufnum,
-		Osc.ar(~t,phase1.rho,phase:az1.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
-			Osc.ar(~t,phase1.rho,phase:el1.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)));
+		Out.ar(0,VBAP.ar(6,IFFT(chainxx),~b.bufnum,az1.raddeg,el1.raddeg));
 
-		Out.ar(0,VBAP.ar(6,IFFT(chainyy),~b.bufnum,
-		Osc.ar(~t,phase2.rho,phase:az2.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
-			Osc.ar(~t,phase2.rho,phase:el2.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)));
+		Out.ar(0,VBAP.ar(6,IFFT(chainyy),~b.bufnum,az2.raddeg,el2.raddeg));
 pl=pl+1;
 
 		};
