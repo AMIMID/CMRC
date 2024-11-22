@@ -1127,4 +1127,4 @@ pl=pl+1;
 
 Synth(\o_in);
 s.record(numChannels:3);
-s.record(numChannels:4)
+s.record(numChannels:4);
