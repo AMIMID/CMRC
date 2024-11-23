@@ -180,7 +180,7 @@ var pl10=0,pl11=0,pl12=0,pl13=0,pl14=0,pl15=0;
 ///////////////////////L-system algae variable a,b rules:a=ab b=a , n3 for n0=a
 rythm=[1,1/1,1,1,1/1];
 
-~dur1 = (90*~time).collect{
+~dur1 = (45*~time).collect{
 	ph1=~magx.[pl1];
 	index1=rythm.wrapAt(pl7);
 	pl7=pl7+1;
@@ -190,7 +190,7 @@ rythm=[1,1/1,1,1,1/1];
 
 	};
 
-~dur2 = (90*~time).collect{
+~dur2 = (45*~time).collect{
 	ph2=~magy.[pl2];
 	index2=rythm.wrapAt(pl8);
 	pl8=pl8+1;
@@ -199,7 +199,7 @@ rythm=[1,1/1,1,1,1/1];
 	t2=ph2*index2;
 	};
 
-~dur3 = (90*~time).collect{
+~dur3 = (45*~time).collect{
 	ph3=~magz.[pl3];
 	index3=rythm.wrapAt(pl9);
 	pl9=pl9+1;
@@ -407,7 +407,6 @@ ton3=2.pow(n3/(2*6));
 osc1=VBAP.ar(6,
 				//Osc.ar(~w1.bufnum,pitch1,mul:amp1,phase:phase+ph_x.theta),
 						SinOsc.ar(pitch1,mul:amp1,phase:~angle.[pl1].degrad),
-~b.bufnum,
 ~b.bufnum,
 //sphere1.theta.raddeg,sphere1.phi.raddeg
 Osc.ar(~t.bufnum,1,phase:sphere1.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
@@ -717,7 +716,7 @@ Osc.ar(~t.bufnum,1,phase:sphere3.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:9
 	\angle_rot5,Prand(~angle,inf),
 ));
 	);
-	TempoClock.default.tempo_(1/6);
+	TempoClock.default.tempo_(1/8);
 
 //s.record(numChannels:4);
 	/////////////////////scales
@@ -736,7 +735,7 @@ Tdef.new(\h,{
 ~bb.play;
 		//	s.record(numChannels:4);
 ~cc.play;
-s.record(numChannels:3);
+s.record(numChannels:1);
 			(1).wait;
 //s.stopRecording
 //	})
