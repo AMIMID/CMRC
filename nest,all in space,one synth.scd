@@ -276,7 +276,7 @@ sig.plot;
 		angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);
 		}
 		}.value;
-	~angle=~angle/2;
+	~angle1=~angle/2;
 	);
 
 /////synths////
@@ -388,12 +388,12 @@ ton3=2.pow(n3/(2*6));
 		cutt_freq2=(freq*ton2*m).round(0.0000000000001);
 		cutt_freq3=(freq*ton3*m).round(0.0000000000001);*/
 				/////fm///+SinOsc.ar(mag_x.rho,mag_x.theta,mul:mag_x.rho.reciprocal)
-					envp=EnvGen.ar(Env.adsr(0.05,0.5,1/2,6,1),gate:gate);
+					envp=EnvGen.ar(Env.adsr(0.01,0.5,1/2,6,1),gate:gate);
 
-
+//Select.ar(pl1,~angle).degrad
 osc1=VBAP.ar(6,
 				//Osc.ar(~w1.bufnum,pitch1,mul:amp1,phase:phase+ph_x.theta),
-				SinOsc.ar(pitch1,mul:amp1,phase:Select.ar(pl1,~angle).degrad),
+				SinOsc.ar(pitch1,mul:amp1,phase:ph_x.theta),
 ~b.bufnum,
 //sphere1.theta.raddeg,sphere1.phi.raddeg
 Osc.ar(~t.bufnum,envp,phase:sphere1.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
@@ -402,7 +402,7 @@ Osc.ar(~t.bufnum,envp,phase:sphere1.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mu
 
 osc2=VBAP.ar(6,
 				//Osc.ar(~w3.bufnum,pitch3,mul:amp3,phase:phase+ph_z.theta),
-						SinOsc.ar(pitch2,mul:amp2,phase:Select.ar(pl1,~angle).degrad),
+						SinOsc.ar(pitch2,mul:amp2,phase:ph_y.theta),
 ~b.bufnum,
 //sphere2.theta.raddeg,sphere2.phi.raddeg
 Osc.ar(~t.bufnum,envp,phase:sphere2.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
@@ -411,7 +411,7 @@ Osc.ar(~t.bufnum,envp,phase:sphere2.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mu
 
 osc3=VBAP.ar(6,
 					//Osc.ar(~w3.bufnum,pitch3,mul:amp3,phase:phase+ph_z.theta),
-						SinOsc.ar(pitch3,mul:amp3,phase:Select.ar(pl1,~angle).degrad),
+						SinOsc.ar(pitch3,mul:amp3,phase:ph_z.theta),
 ~b.bufnum,
 //sphere3.theta.raddeg,sphere3.phi.raddeg
 Osc.ar(~t.bufnum,envp,phase:sphere3.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
@@ -454,11 +454,11 @@ Osc.ar(~t.bufnum,envp,phase:sphere3.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mu
 		\xr,Pbrown(0,1,0.1,inf),
 		\yr,Pbrown(0,1,0.1,inf),
 		\zr,Pbrown(0,1,0.1,inf),
-	\angle_rot1,Prand(~angle,inf),
-	\angle_rot2,Prand(~angle,inf),
-	\angle_rot3,Prand(~angle,inf),
-	\angle_rot4,Prand(~angle,inf),
-	\angle_rot5,Prand(~angle,inf),
+	\angle_rot1,Prand(~angle1,inf),
+	\angle_rot2,Prand(~angle1,inf),
+	\angle_rot3,Prand(~angle1,inf),
+	\angle_rot4,Prand(~angle1,inf),
+	\angle_rot5,Prand(~angle1,inf),
 ));
 	);
 	TempoClock.default.tempo_(16/1);
