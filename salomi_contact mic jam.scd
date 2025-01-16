@@ -61,8 +61,7 @@ Buffer.freeAll
 	in1 = PlayBuf.ar(1, ~c1.bufnum, BufRateScale.kr(~c1.bufnum),startPos:(~c1.numFrames/512)*i, loop: 0, doneAction:2);
 
 
-	chainx = FFT(LocalBuf(frames), in1);
-	chainy = FFT(LocalBuf(frames), in1);
+			chainx = SoundIn.ar(0);
 
 			b=511.xrand(b).postln;
 
@@ -71,16 +70,9 @@ chainxx = chainx.pvcollect(frames, {|magnitude, phase, bin|
 
 }, frombin: b, tobin: b, zeroothers: 1);
 
-chainyy = chainx.pvcollect(frames, {|magnitude, phase, bin|
-
-		[magnitude,phase+90.degrad]
-
-}, frombin: b, tobin: b, zeroothers: 1);
 
 		Out.ar(0,IFFT(chainxx)*1);
-		Out.ar(1,IFFT(chainyy)*1);
 			chainx.clear;
-			chainy.clear;
 
 }).add;
 );
