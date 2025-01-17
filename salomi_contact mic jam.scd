@@ -175,3 +175,58 @@ chainyy = chainx.pvcollect(frames, {|magnitude, phase, bin|
 }).add;
 
 )
+///////////////////
+
+({
+		var n=1.neg;
+	~k=(512).collect{
+		n=n+1;
+		}
+		}.value
+	)
+
+
+(
+~b=Pxrand(~k,512).asStream;
+512.do{
+	|i|
+(
+		SynthDef.new(\obin_++i, {
+
+    var b=1.neg;
+    var in1,chainx,chainy;
+	var chainxx,chainyy;
+	var bank,frames=1024;
+	var samplerate=44100;
+	var env;
+
+			in1 = SoundIn.ar(0);
+
+
+	chainx = FFT(LocalBuf(frames), in1);
+	chainy = FFT(LocalBuf(frames), in1);
+			b=~b.next.postln;
+
+chainxx = chainx.pvcollect(frames, {|magnitude, phase, bin|
+		[magnitude,phase]
+
+}, frombin: b, tobin: b, zeroothers: 1);
+
+chainyy = chainx.pvcollect(frames, {|magnitude, phase, bin|
+
+		[magnitude,phase+90.degrad]
+
+}, frombin: b, tobin: b, zeroothers: 1);
+
+		Out.ar(0,IFFT(chainxx)*1);
+		Out.ar(1,IFFT(chainyy)*1);
+			chainx.clear;
+			chainy.clear;
+
+}).add;
+);
+}
+)
+
+
+Synth(\obin_++(511.rand))
