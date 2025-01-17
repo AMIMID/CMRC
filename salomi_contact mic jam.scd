@@ -202,7 +202,7 @@ chainyy = chainx.pvcollect(frames, {|magnitude, phase, bin|
 
 			in1 = SoundIn.ar(0);
 
-
+nv=EnvGen.ar(Env([0,1,1,0],[0,duration,0]));
 	chainx = FFT(LocalBuf(frames), in1);
 	chainy = FFT(LocalBuf(frames), in1);
 			b=~b.next.postln;
@@ -218,8 +218,8 @@ chainyy = chainx.pvcollect(frames, {|magnitude, phase, bin|
 
 }, frombin: b, tobin: b, zeroothers: 1);
 
-		Out.ar(0,IFFT(chainxx)*1);
-		Out.ar(1,IFFT(chainyy)*1);
+		Out.ar(0,IFFT(chainxx)*env);
+		Out.ar(1,IFFT(chainyy)*env);
 			chainx.clear;
 			chainy.clear;
 
@@ -229,5 +229,5 @@ chainyy = chainx.pvcollect(frames, {|magnitude, phase, bin|
 )
 
 
-~m=Pxrand(~k,512).asStream;
-Synth(\obin_++(~m.next))
+~m=Pxrand(~k,512,1).asStream;
+Synth(\obin_++(~m.next),[\duration,8])
