@@ -229,4 +229,5 @@ chainyy = chainx.pvcollect(frames, {|magnitude, phase, bin|
 )
 
 
-Synth(\obin_++(511.rand))
+~m=Pxrand(~k,512).asStream;
+Synth(\obin_++(~m.next))
