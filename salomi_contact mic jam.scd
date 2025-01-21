@@ -185,7 +185,7 @@ chainyy = chainx.pvcollect(frames, {|magnitude, phase, bin|
 		}.value
 	)
 
-
+~duration=(~c1.numFrames/44100)
 (
 ~b=Pxrand(~k,512).asStream;
 512.do{
@@ -198,7 +198,7 @@ chainyy = chainx.pvcollect(frames, {|magnitude, phase, bin|
 	var chainxx,chainyy;
 	var bank,frames=1024;
 	var samplerate=44100;
-	var env;
+	var env,duration;
 
 			in1 = SoundIn.ar(0);
 
