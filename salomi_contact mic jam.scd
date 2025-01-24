@@ -16,7 +16,7 @@ Buffer.freeAll
 
 ~c1 = Buffer.readChannel(s,,channels:0 );
 
-~dur=~c1.numFrames/512
+~dur=~c1.numFrames/44100
 
 ///////////////////
 
@@ -75,5 +75,5 @@ chainyy = chainx.pvcollect(frames, {|magnitude, phase, bin|
 )
 
 
-~m=Pseq(~k,512).asStream;
+~m=Pseq(~k,1).asStream;
 Synth(\obin_++(~m.next),[\duration,~dur])
