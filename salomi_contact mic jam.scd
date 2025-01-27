@@ -75,8 +75,23 @@ chainyy = chainx.pvcollect(frames, {|magnitude, phase, bin|
 )
 
 
+(
 ~m=Pseq(~k,1).asStream;
-Synth(\obin_++(~m.next),[\duration,~dur])
+~f=Pseq(~k,1).asStream;
+//s.record(numChannels:4);
+)
+
+(
+~synths = [];
+x = {
+    var newSynth;
+    newSynth =Synth(\obin_++(~m.next)); // Create a new Synth
+    ~synths = ~synths.add(newSynth); // Add it to the array
+    newSynth.postln; // Print the Synth to confirm
+};
+)
+x.value; // Call x to create a new Synth
+~synths.[~f.next].free
 
 /////////////////////////////////////////////////////////vbap
 
@@ -258,5 +273,20 @@ chainxx = chainx.pvcollect(frames, {|magnitude, phase, bin|
 }
 )
 
-~m=Pseq(~k,512).asStream;
-Synth(\obin_++(~m.next))
+(
+~m=Pseq(~k,1).asStream;
+~f=Pseq(~k,1).asStream;
+//s.record(numChannels:4);
+)
+
+(
+~synths = [];
+x = {
+    var newSynth;
+    newSynth =Synth(\obin_++(~m.next)); // Create a new Synth
+    ~synths = ~synths.add(newSynth); // Add it to the array
+    newSynth.postln; // Print the Synth to confirm
+};
+)
+x.value; // Call x to create a new Synth
+~synths.[~f.next].free
