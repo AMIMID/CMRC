@@ -36,7 +36,7 @@ SynthDef.new(\ospace1, {
 
 			env= EnvGen.ar(Env.sine(10),doneAction:2);
 
-			sig=PlayBuf.ar(1, buffer, BufRateScale.kr(buffer),startPos:0, loop: 0, doneAction:2)*env;
+			sig=PlayBuf.ar(1, buffer.bufnum, BufRateScale.kr(buffer.bufnum),startPos:0, loop: 0, doneAction:2)*env;
 
 			Out.ar(0,sig);
 			Out.ar(1,sig*gain);
@@ -45,7 +45,6 @@ SynthDef.new(\ospace1, {
 }).add;
 );
 )
-
 
 ////////////list
 	({
@@ -56,12 +55,14 @@ SynthDef.new(\ospace1, {
 		}.value
 	);
 
+~l=~list.scramble;
+~l=[~c1,~c2,~c3,~c4,~c5,~c6,~c7,~c8,~c9,~c10,~c11,~c12,~c13,~c14,~c15,~c16,~c17,~c18,~c19,~20].scramble
 //////////pattern for mobius strib of sequential or parallel play of directions
 	(
 
 ~a=Pdef(\1, Pbind(\instrument, \rand,
-			\dur,10,
-		\buffer,Prand(~list,inf)
+		\dur,Pseq(~l.bumFrames/44100),
+		\buffer,Pseq(~l,inf)
 ));
 
 TempoClock.default.tempo_(1/1);
