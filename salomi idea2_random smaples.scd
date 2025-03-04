@@ -77,7 +77,7 @@ MIDIIn.connectAll;
 MIDIdef.cc(\midi2,{ |val, num, chan, src|
 		var band;
 	//[val, num, chan, src].postln;
-	band=val;
+		band=val.linlin(0,127,0,1);
 		band.postln;
 		if(~synth.isPlaying,{~synth.set(\gain,band)});
 },25);
