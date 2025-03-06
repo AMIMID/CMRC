@@ -271,6 +271,102 @@ sphere.theta.raddeg,sphere.phi.raddeg
 );
 );
 
+	(
+(
+SynthDef.new(\ospace1, {
+	arg mult1=1,mult2=1,amp=1,pl1=1;
+	var phase,osc1,osc2,sphere,mag_o,amp1,amp2,decay=7,octave=2;
+	var ton1,ton2;
+	var fundamental;
+	var freq,pitch1,pitch2,env;
+	var pitch;
+	var n1,n2;
+	var xyz;
+
+				env=EnvGen.ar(Env.perc(0.01,decay,amp),doneAction:2,levelScale:4);
+
+fundamental=(55);
+freq=(fundamental*octave);
+
+		mag_o=Complex(Select.kr(pl1,~magx), Select.kr(pl1,~magy));
+				sphere=Polar(mag_o.rho.round(0.00000001)/(2.sqrt),Select.kr(pl1,~angle));
+
+	xyz=Polar(sphere.rho,sphere.theta);
+
+	n1=(xyz.x).round(0.00000001); n2=(xyz.y).round(0.00000001);
+
+ton1=n1.abs.linlin(0,1,1,2*mult1);
+ton2=n2.abs.linlin(0,1,1,2*mult2);
+
+	    amp1=(ton1.reciprocal*octave.reciprocal).round(0.00000001);
+		amp2=(ton2.reciprocal*octave.reciprocal).round(0.00000001);
+
+	pitch1=(freq*ton1).round(0.0000001);
+	pitch2=(freq*ton2).round(0.0000001);
+
+
+
+osc1=Pan2.ar(SinOsc.ar(pitch1,mul:amp1,phase:0),exp(Complex(0,1)*sphere.theta).real);
+
+osc2=Pan2.ar(SinOsc.ar(pitch2,mul:amp2,phase:0),exp(Complex(0,1)*sphere.theta).imag);
+
+					Out.ar(0,LeakDC.ar(osc2,mul:env));
+
+					Out.ar(0,LeakDC.ar(osc1,mul:env));
+
+}).add;
+);
+);
+
+////////////list
+	({
+		var n=1;
+		~list1=(360*12).collect{
+		n=n+1;
+		}
+		}.value
+	);
+
+	~dur=[1/2,1,1,1/3,1/2,1/5,1,1/2];
+
+//////////pattern for mobius strib of sequential or parallel play of directions
+	(
+
+~aa=Pdef(\1, Pbind(\instrument, \ospace1,
+			\dur,Pseq(~dur1,1),
+			//\dur,Pxrand(~dur,inf),
+			//\pl1,Prand(~list1,inf),
+			\pl1,Pbrown(0,4680,6,inf),
+			\mult1,Prand([1,2,4,8],inf),
+				\mult2,Prand([1,2,4,8],inf),
+			//\amp,Pseq(~r,inf);///l system
+));
+
+~aaa=Pdef(\9, Pbind(\instrument, \ospace1,
+			\dur,Pseq(~dur2,1),
+			//\dur,Pxrand(~dur,inf),
+			//\pl1,Prand(~list1,inf),
+			\pl1,Pbrown(0,4680,6,inf),
+				\mult1,Prand([1,2,4,8],inf),
+				\mult2,Prand([1,2,4,8],inf),
+			//\amp,Pseq(~r,inf);///l system
+));
+	);
+	TempoClock.default.tempo_(1/32);
+
+
+
+}
+)
+
+
+(
+~aa.play;
+~aaa.play;
+);
+s.record(numChannels:2);
+
+
 ////////////list
 	({
 		var n=1.neg;
