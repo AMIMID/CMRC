@@ -197,10 +197,10 @@ pitch1=(freq*ton1).round(0.0000001);pitch2=(freq*ton2).round(0.0000001);
 				rq2=In.kr(1);
 
 //osc1=Pan2.ar(BPF.ar(sig, pitch1, rq1, mul: amp1 * mag_o.real.round(0.00000001) * (rq1.reciprocal)),sphere.asComplex.real.round(0.00000001));
-osc1=Pan2.ar(SinOsc.ar(pitch1,mul:amp1*mag_o.real.round(0.00000001),phase:0),sphere.x.round(0.00000001));
+osc1=Pan2.ar(SinOsc.ar(pitch1,mul:amp1*mag_o.rho.round(0.00000001),phase:0),sphere.x.round(0.00000001));
 
 //osc2=Pan2.ar(BPF.ar(sig, pitch2, rq2, mul: amp2 * mag_o.imag.rho.round(0.00000001) * (rq2.reciprocal)),sphere.asComplex.imag.round(0.00000001));
-osc2=Pan2.ar(SinOsc.ar(pitch2,mul:amp2*mag_o.imag.round(0.00000001),phase:90),sphere.y.round(0.00000001));
+osc2=Pan2.ar(SinOsc.ar(pitch2,mul:amp2*mag_o.rho.round(0.00000001),phase:90),sphere.y.round(0.00000001));
 
 
 					Out.ar(0,LeakDC.ar(osc2,mul:env));
