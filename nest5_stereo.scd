@@ -71,20 +71,20 @@ var durx,dury,th1,th2,n3=0,n4=0,posotion3,position4,num=1.neg;
 360.do{
 
 			durx=12.collect{
-		th1 = angle.degrad + ((pi/4)*2.pow(n3/12));
+				th1 = (angle.degrad + ((2pi)*2.pow(n3/12)).wrap(0,2pi)).wrap(0,2pi);
 		n3=(n3+1).mod(12);
 	posotion3=exp(Complex(0,1)*th1).real.abs;
 
 };
 			dury=12.collect{
-		th2 = angle.degrad + ((pi/4)*2.pow(n4/12));
+				th2 = (angle.degrad + ((2pi)*2.pow(n4/12)).wrap(0,2pi)).wrap(0,2pi);
 		n4=(n4+1).mod(12);
 	position4=exp(Complex(0,1)*th2).imag.abs;
 };
 
 pos= 12.collect{
 
-		th2 = angle.degrad + ((pi/4)*2.pow(n/12));
+				th2 = (angle.degrad + ((2pi)*2.pow(n/12)).wrap(0,2pi)).wrap(0,2pi);
 		n=(n+1).mod(12);
 	//	n.postln;
 	position=exp(Complex(0,1)*th2).theta;
@@ -93,7 +93,7 @@ pos= 12.collect{
 
 magx = 12.collect{
 
-        thita1 = angle.degrad + ((pi/4)*2.pow(n1/12));
+				thita1 = (angle.degrad + ((2pi)*2.pow(n1/12)).wrap(0,2pi)).wrap(0,2pi);
 		n1=(n1+1).mod(12);
 	position1=exp(Complex(0,1)*thita1).theta;
 
@@ -104,7 +104,7 @@ magx = 12.collect{
 
 magy = 12.collect{
 
-	    thita2 = angle.degrad + ((pi/4)*2.pow(n2/12));
+				thita2 = (angle.degrad + ((2pi)*2.pow(n2/12)).wrap(0,2pi)).wrap(0,2pi);
 		n2=(n2+1).mod(12);
 	position2=exp(Complex(0,1)*thita2).theta;
 
@@ -135,12 +135,12 @@ SynthDef.new(\ospace1, {
 						env=EnvGen.ar(Env.perc(0.02,decay,amp),doneAction:2,levelScale:0.01);
 				//env=EnvGen.ar(Env.sine(decay,amp),doneAction:2,levelScale:0.01);
 
-fundamental=(12*96);
+fundamental=(12*128);
 freq=(fundamental*octave);
 
 		mag_o=Complex(Select.kr(pl1,~magx), Select.kr(pl1,~magy));
 		sphere=Polar(1,Select.kr(pl1,~angle));
-xyz=Polar(32,Select.kr(pl1,~angle));
+xyz=Polar(48,Select.kr(pl1,~angle));
 
 	n1=(xyz.x).round(0.00000001); n2=(xyz.y).round(0.00000001);
 
@@ -178,12 +178,12 @@ SynthDef.new(\ospace2, {
 				env=EnvGen.ar(Env.perc(0.02,decay,amp),doneAction:2,levelScale:0.01);
 				//env=EnvGen.ar(Env.sine(decay,amp),doneAction:2,levelScale:0.01);
 
-fundamental=(12*96);
+fundamental=(12*128);
 freq=(fundamental*octave);
 
 		mag_o=Complex(Select.kr(pl1,~magx), Select.kr(pl1,~magy));
 		sphere=Polar(1,Select.kr(pl1,~angle));
-xyz=Polar(32,Select.kr(pl1,~angle));
+xyz=Polar(48,Select.kr(pl1,~angle));
 
 	n1=(xyz.x).round(0.00000001); n2=(xyz.y).round(0.00000001);
 
@@ -240,7 +240,7 @@ osc2=Pan2.ar(SinOsc.ar(pitch2,mul:amp2*mag_o.imag.round(0.00000001),phase:90),sp
 			\amp,Pseq(~r,inf);///l system
 ));
 	);
-	TempoClock.default.tempo_(1/32);
+	TempoClock.default.tempo_(1/1);
 ///bufs
 ~c1 = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/band album library/Electric Wizard/Dopethrone/01 Vinum Sabbathi.wav",channels:0);
 ~c2 = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/band album library/Electric Wizard/Dopethrone/01 Vinum Sabbathi.wav",channels:1);
