@@ -196,11 +196,11 @@ pitch1=(freq*ton1).round(0.0000001);pitch2=(freq*ton2).round(0.0000001);
 				rq1=In.kr(0);
 				rq2=In.kr(1);
 
-//osc1=Pan2.ar(BPF.ar(sig, pitch1, rq1, mul: amp1 * mag_o.real.round(0.00000001) * (rq1.reciprocal)),sphere.asComplex.real.round(0.00000001));
-osc1=Pan2.ar(SinOsc.ar(pitch1,mul:amp1*mag_o.rho.round(0.00000001),phase:0),sphere.x.round(0.00000001));
+osc1=Pan2.ar(BPF.ar(sig, pitch1, rq1, mul: amp1 * mag_o.rho.round(0.00000001) * (rq1.sqrt.reciprocal)),sphere.x.round(0.00000001));
+//osc1=Pan2.ar(SinOsc.ar(pitch1,mul:amp1*mag_o.rho.round(0.00000001),phase:0),sphere.x.round(0.00000001));
 
-//osc2=Pan2.ar(BPF.ar(sig, pitch2, rq2, mul: amp2 * mag_o.imag.rho.round(0.00000001) * (rq2.reciprocal)),sphere.asComplex.imag.round(0.00000001));
-osc2=Pan2.ar(SinOsc.ar(pitch2,mul:amp2*mag_o.rho.round(0.00000001),phase:90),sphere.y.round(0.00000001));
+osc2=Pan2.ar(BPF.ar(sig, pitch2, rq2, mul: amp2 * mag_o.rho.round(0.00000001) * (rq2.sqrt.reciprocal)),sphere.y.round(0.00000001));
+//osc2=Pan2.ar(SinOsc.ar(pitch2,mul:amp2*mag_o.rho.round(0.00000001),phase:90),sphere.y.round(0.00000001));
 
 
 					Out.ar(0,LeakDC.ar(osc2,mul:env));
@@ -246,7 +246,7 @@ osc2=Pan2.ar(SinOsc.ar(pitch2,mul:amp2*mag_o.rho.round(0.00000001),phase:90),sph
 ~c2 = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Dokuments/EXTERNAL/music/band album library/Electric Wizard/Dopethrone/01 Vinum Sabbathi.wav",channels:1);
 	TempoClock.default.tempo_(1);
 
-	~b=Buffer.alloc(s,2048);
+	~m=Buffer.alloc(s,2048);
 			{
 var signal,wt,env;
 
@@ -271,8 +271,8 @@ SynthDef.new(\obuff, {
 
 			Out.ar(2,sig1*gain);
 				Out.ar(3,sig2*gain);
-				Out.kr(0,Osc.kr(~b.bufnum,0.01,phase:0.degrad));
-				Out.kr(1,Osc.kr(~b.bufnum,0.01,phase:10.degrad));
+				Out.kr(0,Osc.kr(~m.bufnum,0.01,phase:0.degrad));
+				Out.kr(1,Osc.kr(~m.bufnum,0.01,phase:10.degrad));
 
 
 }).add;
@@ -286,6 +286,7 @@ SynthDef.new(\obuff, {
 (
 ~aa.play;
 ~aaa.play;
+Synth(\obuff);
 );
 s.record(numChannels:2);
 
