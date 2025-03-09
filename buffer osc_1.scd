@@ -537,7 +537,7 @@ SynthDef.new(\ospace1, {
 				//env=EnvGen.ar(Env.sine(decay,amp),doneAction:2,levelScale:1/10);
 //
 //fundamental=(12*6);
-				scale=97.collect{nn=nn+1;Scale.major.performDegreeToKey(nn,12)};
+				scale=97.collect{nn=nn+1;Scale.minor.performDegreeToKey(nn,12)};
 
 fundamental=(12*128);
 freq=(fundamental*octave);
@@ -551,9 +551,9 @@ n1=(sphere.x).round(0.00000001); n2=(sphere.y).round(0.00000001); n3=(sphere.z).
 
 ratio1=n1.round(1);ratio2=n2.round(1);ratio3=n3.round(1);
 
-				ton1=2.pow(Select.kr(ratio1,scale)/12);
-				ton2=2.pow(Select.kr(ratio2,scale)/12);
-					ton3=2.pow(Select.kr(ratio3,scale)/12);
+					ton1 = 2.pow(Select.kr(ratio1.linlin(-48, 48, 0, 96), scale) / 12);
+ton2 = 2.pow(Select.kr(ratio2.linlin(-48, 48, 0, 96), scale) / 12);
+ton3 = 2.pow(Select.kr(ratio3.linlin(-48, 48, 0, 96), scale) / 12);
 
 amp1=(ton1.reciprocal*octave.reciprocal).round(0.00000001);
 amp2=(ton2.reciprocal*octave.reciprocal).round(0.00000001);
@@ -648,7 +648,7 @@ SynthDef.new(\ospace2, {
 				//env=EnvGen.ar(Env.sine(decay,amp),doneAction:2,levelScale:1/10);
 
 //fundamental=(12*6);
-				scale=97.collect{nn=nn+1;Scale.major.performDegreeToKey(nn,12)};
+				scale=97.collect{nn=nn+1;Scale.minor.performDegreeToKey(nn,12)};
 
 fundamental=(12*128);
 freq=(fundamental*octave);
@@ -662,9 +662,9 @@ n1=(sphere.x).round(0.00000001); n2=(sphere.y).round(0.00000001); n3=(sphere.z).
 
 ratio1=n1.round(1);ratio2=n2.round(1);ratio3=n3.round(1);
 
-		ton1 = 2.pow(Select.kr(ratio1.linlin(-48, 48, 0, 97), scale) / 12);
-ton2 = 2.pow(Select.kr(ratio2.linlin(-48, 48, 0, 97), scale) / 12);
-ton3 = 2.pow(Select.kr(ratio3.linlin(-48, 48, 0, 97), scale) / 12);
+		ton1 = 2.pow(Select.kr(ratio1.linlin(-48, 48, 0, 96), scale) / 12);
+ton2 = 2.pow(Select.kr(ratio2.linlin(-48, 48, 0, 96), scale) / 12);
+ton3 = 2.pow(Select.kr(ratio3.linlin(-48, 48, 0, 96), scale) / 12);
 
 amp1=(ton1.reciprocal*octave.reciprocal).round(0.00000001);
 amp2=(ton2.reciprocal*octave.reciprocal).round(0.00000001);
@@ -873,10 +873,9 @@ SynthDef.new(\obuff, {
 Buffer.freeAll;
 
 
-TempoClock.default.tempo_(8/1);
+TempoClock.default.tempo_(4/1);
 
-
-
+Scale.directory;
 
 (
 ~aa.play;
