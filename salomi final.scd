@@ -490,10 +490,11 @@ wt = signal.asWavetable;
 		}.value;
 
 ////ssynth
+	~controlBus = Bus.control(s, 1);
 	(
-~synth=(
+(
 SynthDef.new(\ospace1, {
-	arg amp=1,pl1=1,gain=1,rq=0.1;
+	arg amp=1,pl1=1,rq=0.1;
 	var phase,osc1,osc2,osc3,sphere,amp1,amp2,amp3,decay=4,pl2=0,envp,octave=2;
 	var ton1,ton2,ton3;
 	var fundamental;
@@ -501,7 +502,7 @@ SynthDef.new(\ospace1, {
 	var pitch;
 	var n1,n2,n3,rq1,rq2,rq3;
 	var mag,magx,magy,magz;
-				var sig,rq;
+				var sig;
 					var ratio1,ratio2,ratio3;
 		var scale,nn=25.neg;
 
@@ -565,7 +566,9 @@ amp3=(ton3.reciprocal*octave.reciprocal).round(0.00000001);
 				/*	rq1=MouseX.kr(0.0000001,0.1);
 				rq2=MouseX.kr(0.0000001,0.1);
 				rq3=MouseX.kr(0.0000001,0.1);
+
 */
+				rq=In.kr(~controlBus).lag(0.3);
 
 osc1=VBAP.ar(4,
 					BPF.ar(sig, pitch1, rq, mul: amp1 * magx.rho.round(0.00000001) * (rq.sqrt.reciprocal)),
@@ -592,16 +595,17 @@ sphere.theta.raddeg,sphere.phi.raddeg
 		);
 
 	//wrappedOut3.value(out1,LeakDC.ar(osc3,mul:env));
-					Out.ar(0,LeakDC.ar(Limiter.ar(osc3,1/2),mul:env)*gain);
+					Out.ar(0,LeakDC.ar(Limiter.ar(osc3,1/2),mul:env));
 	//	wrappedOut2.value(out1,LeakDC.ar(osc2,mul:env));
-					Out.ar(0,LeakDC.ar(Limiter.ar(osc2,1/2),mul:env)*gain);
+					Out.ar(0,LeakDC.ar(Limiter.ar(osc2,1/2),mul:env));
 
 		//wrappedOut1.value(out1,LeakDC.ar(osc1,mul:env));
-				Out.ar(0,LeakDC.ar(Limiter.ar(osc1,1/2),mul:env)*gain);
+				Out.ar(0,LeakDC.ar(Limiter.ar(osc1,1/2),mul:env));
 
 }).add;
 );
-)
+);
+//	~syntho=Synth(\ospace1);
 ///pattern
 	(
 
@@ -609,6 +613,7 @@ sphere.theta.raddeg,sphere.phi.raddeg
 			\dur,Pseq(~dur,1),
 			//\dur,1,
 			\pl1,Pbrown(1,4319,12,inf),
+			\rq,~controlBus.asMap,
 			\amp,1;
 ));
 
@@ -631,10 +636,10 @@ wt=signal.asWavetable;
 		}.value;
 
 (
-~synth=(
+(
 SynthDef.new(\obuff, {
-	arg buffer=0;
-	var sig1,sig2,env,gain=1/2;
+	arg buffer=0,gain=1;
+	var sig1,sig2,env;
 
 			//env= EnvGen.ar(Env.sine(10),doneAction:2);
 
@@ -661,34 +666,35 @@ MIDIIn.connectAll;
 MIDIdef.cc(\midi1,{ |val, num, chan, src|
 		var band;
 	//[val, num, chan, src].postln;
-		band=val.linlin(0,127,0.00001,0.1);
+		band=val.linlin(0,127,0.00001,0.1).round(0.00001);
 		band.postln;
-		if(~synth.isPlaying,{~synth.set(\rq,band)});
+				~controlBus.set(band);
 },25);
 	);
 		(
 MIDIdef.cc(\midi2,{ |val, num, chan, src|
 		var band;
 	//[val, num, chan, src].postln;
-		band=val.linlin(0,127,0,1);
+				band=val.linlin(0,127,0,1).round(0.00001);
 		band.postln;
-		if(~synth.isPlaying,{~synth.set(\gain,band)});
+		~synth.set(\gain,band);
 },24);
 	);
-	)
+	);
+	TempoClock.default.tempo_(8/1);
 
 }
 )
 Buffer.freeAll;
 
 
-TempoClock.default.tempo_(4/1);
+TempoClock.default.tempo_(8/1);
 
 Scale.directory;
 
 (
 ~aa.play;
-		Synth(\obuff);
+~synth=Synth.new(\obuff,[\gain,0]);
 );
 
 s.record(numChannels:4);
