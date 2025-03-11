@@ -491,9 +491,9 @@ wt = signal.asWavetable;
 
 ////ssynth
 	(
-(
+~synth=(
 SynthDef.new(\ospace1, {
-	arg amp=1,pl1=1;
+	arg amp=1,pl1=1,gain=1,rq=0.1;
 	var phase,osc1,osc2,osc3,sphere,amp1,amp2,amp3,decay=4,pl2=0,envp,octave=2;
 	var ton1,ton2,ton3;
 	var fundamental;
@@ -559,16 +559,16 @@ amp3=(ton3.reciprocal*octave.reciprocal).round(0.00000001);
 		/*	rq1=0.1;
 				rq2=0.1;
 				rq3=0.1;*/
-				rq1=In.kr(0);
-				rq2=In.kr(1);
-				rq3=In.kr(2);
+				//rq1=In.kr(0);
+				//rq2=In.kr(1);
+				//rq3=In.kr(2);
 				/*	rq1=MouseX.kr(0.0000001,0.1);
 				rq2=MouseX.kr(0.0000001,0.1);
 				rq3=MouseX.kr(0.0000001,0.1);
 */
 
 osc1=VBAP.ar(4,
-					BPF.ar(sig, pitch1, rq1, mul: amp1 * magx.rho.round(0.00000001) * (rq1.sqrt.reciprocal)),
+					BPF.ar(sig, pitch1, rq, mul: amp1 * magx.rho.round(0.00000001) * (rq.sqrt.reciprocal)),
 ~b.bufnum,
 sphere.theta.raddeg,sphere.phi.raddeg
 //Osc.ar(~t.bufnum,1/2,phase:sphere.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
@@ -576,7 +576,7 @@ sphere.theta.raddeg,sphere.phi.raddeg
 		);
 
 osc2=VBAP.ar(4,
-					BPF.ar(sig,pitch2,rq2,mul:amp2*magy.rho.round(0.00000001)* (rq2.sqrt.reciprocal)),
+					BPF.ar(sig,pitch2,rq,mul:amp2*magy.rho.round(0.00000001)* (rq.sqrt.reciprocal)),
 ~b.bufnum,
 sphere.theta.raddeg,sphere.phi.raddeg
 //Osc.ar(~t.bufnum,1,phase:sphere.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
@@ -584,7 +584,7 @@ sphere.theta.raddeg,sphere.phi.raddeg
 		);
 
 osc3=VBAP.ar(4,
-						BPF.ar(sig,pitch3,rq3,mul:amp3*magz.rho.round(0.00000001)* (rq3.sqrt.reciprocal)),
+						BPF.ar(sig,pitch3,rq,mul:amp3*magz.rho.round(0.00000001)* (rq.sqrt.reciprocal)),
 ~b.bufnum,
 sphere.theta.raddeg,sphere.phi.raddeg
 //Osc.ar(~t.bufnum,1,phase:sphere.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
@@ -592,101 +592,13 @@ sphere.theta.raddeg,sphere.phi.raddeg
 		);
 
 	//wrappedOut3.value(out1,LeakDC.ar(osc3,mul:env));
-					Out.ar(0,LeakDC.ar(Limiter.ar(osc3,1/2),mul:env));
+					Out.ar(0,LeakDC.ar(Limiter.ar(osc3,1/2),mul:env)*gain);
 	//	wrappedOut2.value(out1,LeakDC.ar(osc2,mul:env));
-					Out.ar(0,LeakDC.ar(Limiter.ar(osc2,1/2),mul:env));
+					Out.ar(0,LeakDC.ar(Limiter.ar(osc2,1/2),mul:env)*gain);
 
 		//wrappedOut1.value(out1,LeakDC.ar(osc1,mul:env));
-				Out.ar(0,LeakDC.ar(Limiter.ar(osc1,1/2),mul:env));
+				Out.ar(0,LeakDC.ar(Limiter.ar(osc1,1/2),mul:env)*gain);
 
-}).add;
-);
-		(
-SynthDef.new(\ospace2, {
-	arg amp=1,pl1=1;
-	var phase,osc1,osc2,osc3,sphere,amp1,amp2,amp3,decay=4,pl2=0,envp,octave=2;
-	var ton1,ton2,ton3;
-	var fundamental;
-	var freq,pitch1,pitch2,pitch3,env;
-	var pitch;
-	var n1,n2,n3,rq1,rq2,rq3;
-	var mag,magx,magy,magz;
-				var sig,rq;
-					var ratio1,ratio2,ratio3;
-		var scale,nn=25.neg;
-
-			// var wrappedOut1 = { |busArray, signalArray|
-			// 	[busArray, signalArray].flop.do { |pair|
-			// Out.ar(pair[0], pair[1])}};
-			// var wrappedOut2 = { |busArray, signalArray|
-			// 	[busArray, signalArray].flop.do { |pair|
-			// Out.ar(pair[0], pair[1])}};
-			// var wrappedOut3 = { |busArray, signalArray|
-			// 	[busArray, signalArray].flop.do { |pair|
-			// Out.ar(pair[0], pair[1])}};
-			// var out1 = NamedControl.kr(\out1, [0, 1, 2, 3]);  // multiple buses!
-//	var out2 = NamedControl.kr(\out2, [0, 1, 2, 3, 4, 5]);  // multiple buses!
-//	var out3 = NamedControl.kr(\out3, [0, 1, 2, 3, 4, 5]);  // multiple buses!
-
-//mag=Cartesian(Select.kr(pl1,~magx), Select.kr(pl1,~magy),Select.kr(pl1,~magz));
-				magx=Cartesian(Select.kr(pl1,~magx), 0,0);
-				magy=Cartesian(0, Select.kr(pl1,~magy),0);
-				magz=Cartesian(0, 0,Select.kr(pl1,~magz));
-
-				//env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate,doneAction:2,levelScale:0.1);
-				env=EnvGen.ar(Env.perc(0.01,decay,amp),doneAction:2,levelScale:0.5 );
-				//env=EnvGen.ar(Env.sine(decay,amp),doneAction:2,levelScale:1/10);
-
-//fundamental=(12*6);
-				scale=49.collect{nn=nn+1;Scale.major.performDegreeToKey(nn,12)};
-
-fundamental=(12*128);
-freq=(fundamental*octave);
-
-sphere=Spherical(24,Select.kr(pl1,~az),Select.kr(pl1,~el));
-
-n1=(sphere.x).round(0.00000001); n2=(sphere.y).round(0.00000001); n3=(sphere.z).round(0.00000005);
-
-//ton1=n1.abs;ton2=n2.abs;ton3=n3.abs;
-//ton1=2.pow(n1.round(1)/12);ton2=2.pow(n2.round(1)/12);ton3=2.pow(n3.round(1)/12);
-
-ratio1=n1.round(1);ratio2=n2.round(1);ratio3=n3.round(1);
-
-		ton1 = 2.pow(Select.kr(ratio1.linlin(24.neg, 24, 0, 48), scale) / 12);
-ton2 = 2.pow(Select.kr(ratio2.linlin(24.neg, 48, 0, 48), scale) / 12);
-ton3 = 2.pow(Select.kr(ratio3.linlin(24.neg, 48, 0, 48), scale) / 12);
-
-amp1=(ton1.reciprocal*octave.reciprocal).round(0.00000001);
-amp2=(ton2.reciprocal*octave.reciprocal).round(0.00000001);
-amp3=(ton3.reciprocal*octave.reciprocal).round(0.00000001);
-
-	pitch1=(freq*ton1).round(0.0000001);
-	pitch2=(freq*ton2).round(0.0000001);
-	pitch3=(freq*ton3).round(0.0000001);
-
-				sig= InFeedback.ar(5,1);
-				//rq=MouseX.kr(0.000001,1);
-		/*	rq1=0.1;
-				rq2=0.1;
-				rq3=0.1;*/
-				rq1=In.kr(0);
-				rq2=In.kr(1);
-				rq3=In.kr(2);
-				/*	rq1=MouseX.kr(0.0000001,0.1);
-				rq2=MouseX.kr(0.0000001,0.1);
-				rq3=MouseX.kr(0.0000001,0.1);
-*/
-
-osc1=BPF.ar(sig, pitch1, rq1, mul: amp1 * magx.rho.round(0.00000001) * (rq1.sqrt.reciprocal));
-
-osc2=BPF.ar(sig,pitch2,rq2,mul:amp2*magy.rho.round(0.00000001)* (rq2.sqrt.reciprocal));
-
-osc3=BPF.ar(sig,pitch3,rq3,mul:amp3*magz.rho.round(0.00000001)* (rq3.sqrt.reciprocal));
-
-
-						Out.ar(0,LeakDC.ar(Limiter.ar(osc3,1/4),mul:env));
-						Out.ar(0,LeakDC.ar(Limiter.ar(osc2,1/4),mul:env));
-						Out.ar(0,LeakDC.ar(Limiter.ar(osc1,1/4),mul:env));
 }).add;
 );
 )
@@ -700,20 +612,10 @@ osc3=BPF.ar(sig,pitch3,rq3,mul:amp3*magz.rho.round(0.00000001)* (rq3.sqrt.recipr
 			\amp,1;
 ));
 
-~aaa=Pdef(\2, Pbind(\instrument, \ospace2,
-		\dur,Pseq(~dur,1),
-			\pl1,Pbrown(1,4319,12,inf),
-			//\pl1,Pseq(~list1,inf),
-		//\out1,Pn(Pshuf([0, 1, 2, 3], 1), inf).clump(4).collect([_]),
-		//	\out2,Pn(Pshuf([0, 1, 2, 3, 4, 5], 1), inf).clump(6).collect([_]),
-		//	\out3,Pn(Pshuf([0, 1, 2, 3, 4, 5], 1), inf).clump(6).collect([_]),
-			\amp,Pseq(~r,inf);///l system
-			//\amp,1;
-));
 );
 
-~c1 = Buffer.readChannel(s,,channels:0);
-~c2 = Buffer.readChannel(s,,channels:0);
+~c1 = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Desktop/salomi1.wav",channels:0);
+~c2 = Buffer.readChannel(s,"/Users/petrostatsiopoulos/Desktop/salomi1.wav",channels:0);
 	TempoClock.default.tempo_(1);
 
 	~m=Buffer.alloc(s,2048);
@@ -737,11 +639,11 @@ SynthDef.new(\obuff, {
 			//env= EnvGen.ar(Env.sine(10),doneAction:2);
 
 			sig1=PlayBuf.ar(1, ~c1.bufnum, BufRateScale.kr(~c1.bufnum),startPos:0, loop: 1, doneAction:2);
-			sig2=PlayBuf.ar(1, ~c2.bufnum, BufRateScale.kr(~c2.bufnum),startPos:0, loop: 1, doneAction:2);
+			//sig2=PlayBuf.ar(1, ~c2.bufnum, BufRateScale.kr(~c2.bufnum),startPos:0, loop: 1, doneAction:2);
 
 
 			Out.ar(4,sig1*gain);
-				Out.ar(5,sig2*gain);
+				//Out.ar(5,sig2*gain);
 				Out.kr(0,Osc.kr(~m.bufnum,0.01,phase:0.degrad));
 				Out.kr(1,Osc.kr(~m.bufnum,0.01,phase:10.degrad));
 				Out.kr(2,Osc.kr(~m.bufnum,0.01,phase:20.degrad));
@@ -756,13 +658,22 @@ MIDIClient.init;
 MIDIIn.connectAll;
 
 		(
+MIDIdef.cc(\midi1,{ |val, num, chan, src|
+		var band;
+	//[val, num, chan, src].postln;
+		band=val.linlin(0,127,0.00001,0.1);
+		band.postln;
+		if(~synth.isPlaying,{~synth.set(\rq,band)});
+},25);
+	);
+		(
 MIDIdef.cc(\midi2,{ |val, num, chan, src|
 		var band;
 	//[val, num, chan, src].postln;
 		band=val.linlin(0,127,0,1);
 		band.postln;
 		if(~synth.isPlaying,{~synth.set(\gain,band)});
-},25);
+},24);
 	);
 	)
 
@@ -777,7 +688,6 @@ Scale.directory;
 
 (
 ~aa.play;
-~aaa.play;
 		Synth(\obuff);
 );
 
