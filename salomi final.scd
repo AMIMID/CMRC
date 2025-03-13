@@ -491,6 +491,7 @@ wt = signal.asWavetable;
 
 ////ssynth
 	~controlBus = Bus.control(s, 1);
+	~controlBus1 = Bus.control(s, 1);
 	(
 (
 SynthDef.new(\ospace1, {
@@ -504,7 +505,7 @@ SynthDef.new(\ospace1, {
 	var mag,magx,magy,magz;
 				var sig;
 					var ratio1,ratio2,ratio3;
-		var scale,nn=25.neg;
+		var scale,nn=49.neg;
 
 			// var wrappedOut1 = { |busArray, signalArray|
 			// 	[busArray, signalArray].flop.do { |pair|
@@ -529,7 +530,7 @@ SynthDef.new(\ospace1, {
 				//env=EnvGen.ar(Env.sine(decay,amp),doneAction:2,levelScale:1/10);
 //
 //fundamental=(12*6);
-				scale=49.collect{nn=nn+1;Scale.major.performDegreeToKey(nn,12)};
+				scale=97.collect{nn=nn+1;Scale.minor.performDegreeToKey(nn,12)};
 
 fundamental=(12*128);
 freq=(fundamental*octave);
@@ -543,9 +544,9 @@ n1=(sphere.x).round(0.00000001); n2=(sphere.y).round(0.00000001); n3=(sphere.z).
 
 ratio1=n1.round(1);ratio2=n2.round(1);ratio3=n3.round(1);
 
-				ton1 = 2.pow(Select.kr(ratio1.linlin(24.neg, 24, 0, 48), scale) / 12);
-ton2 = 2.pow(Select.kr(ratio2.linlin(24.neg, 24, 0, 48), scale) /12);
-ton3 = 2.pow(Select.kr(ratio3.linlin(24.neg, 24, 0, 48), scale) / 12);
+				ton1 = 2.pow(Select.kr(ratio1.linlin(48.neg, 48, 0, 96), scale) / 12);
+ton2 = 2.pow(Select.kr(ratio2.linlin(48.neg, 48, 0, 96), scale) /12);
+ton3 = 2.pow(Select.kr(ratio3.linlin(48.neg, 48, 0, 96), scale) / 12);
 
 amp1=(ton1.reciprocal*octave.reciprocal).round(0.00000001);
 amp2=(ton2.reciprocal*octave.reciprocal).round(0.00000001);
@@ -568,39 +569,19 @@ amp3=(ton3.reciprocal*octave.reciprocal).round(0.00000001);
 				rq3=MouseX.kr(0.0000001,0.1);
 
 */
-				rq=In.kr(~controlBus).lag(0.3);
+				rq=In.kr(~controlBus).lag(0.5);
+				amp=In.kr(~controlBus1).lag(0.5);
 
-osc1=VBAP.ar(4,
-					BPF.ar(sig, pitch1, rq, mul: amp1 * magx.rho.round(0.00000001) * (rq.sqrt.reciprocal)),
-~b.bufnum,
-sphere.theta.raddeg,sphere.phi.raddeg
-//Osc.ar(~t.bufnum,1/2,phase:sphere.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
-//Osc.ar(~t.bufnum,1,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)
-		);
+osc1=BPF.ar(sig, pitch1, rq, mul: amp1 * magx.rho.round(0.00000001) * (rq.sqrt.reciprocal));
 
-osc2=VBAP.ar(4,
-					BPF.ar(sig,pitch2,rq,mul:amp2*magy.rho.round(0.00000001)* (rq.sqrt.reciprocal)),
-~b.bufnum,
-sphere.theta.raddeg,sphere.phi.raddeg
-//Osc.ar(~t.bufnum,1,phase:sphere.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
-//Osc.ar(~t.bufnum,1,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)
-		);
+osc2=BPF.ar(sig,pitch2,rq,mul:amp2*magy.rho.round(0.00000001)* (rq.sqrt.reciprocal));
 
-osc3=VBAP.ar(4,
-						BPF.ar(sig,pitch3,rq,mul:amp3*magz.rho.round(0.00000001)* (rq.sqrt.reciprocal)),
-~b.bufnum,
-sphere.theta.raddeg,sphere.phi.raddeg
-//Osc.ar(~t.bufnum,1,phase:sphere.theta.linlin(pi.neg,pi,2pi.neg,2pi),mul:180),
-//Osc.ar(~t.bufnum,1,phase:sphere.phi.linlin((pi/2).neg,(pi/2),2pi.neg,2pi),mul:90)
-		);
+osc3=BPF.ar(sig,pitch3,rq,mul:amp3*magz.rho.round(0.00000001)* (rq.sqrt.reciprocal));
 
-	//wrappedOut3.value(out1,LeakDC.ar(osc3,mul:env));
-					Out.ar(0,LeakDC.ar(Limiter.ar(osc3,1/2),mul:env));
-	//	wrappedOut2.value(out1,LeakDC.ar(osc2,mul:env));
-					Out.ar(0,LeakDC.ar(Limiter.ar(osc2,1/2),mul:env));
 
-		//wrappedOut1.value(out1,LeakDC.ar(osc1,mul:env));
-				Out.ar(0,LeakDC.ar(Limiter.ar(osc1,1/2),mul:env));
+					Out.ar(0,LeakDC.ar(Limiter.ar(osc3,1/4),mul:env));
+					Out.ar(0,LeakDC.ar(Limiter.ar(osc2,1/4),mul:env));
+				Out.ar(0,LeakDC.ar(Limiter.ar(osc1,1/4),mul:env));
 
 }).add;
 );
@@ -614,7 +595,7 @@ sphere.theta.raddeg,sphere.phi.raddeg
 			//\dur,1,
 			\pl1,Pbrown(1,4319,12,inf),
 			\rq,~controlBus.asMap,
-			\amp,1;
+			\amp,~controlBus1.asMap;
 ));
 
 );
@@ -677,11 +658,20 @@ MIDIdef.cc(\midi2,{ |val, num, chan, src|
 	//[val, num, chan, src].postln;
 				band=val.linlin(0,127,0,1).round(0.00001);
 		band.postln;
-		~synth.set(\gain,band);
+		~controlBus1.set(band);
 },24);
 	);
+				/*(
+MIDIdef.cc(\midi3,{ |val, num, chan, src|
+		var band;
+	//[val, num, chan, src].postln;
+				band=val.linlin(0,127,1,16).round(1);
+		band.postln;
+		TempoClock.default.tempo_(band);
+},23);
+	);*/
 	);
-	TempoClock.default.tempo_(8/1);
+	TempoClock.default.tempo_(4/1);
 
 }
 )
@@ -694,7 +684,7 @@ Scale.directory;
 
 (
 ~aa.play;
-~synth=Synth.new(\obuff,[\gain,0]);
+~synth=Synth.new(\obuff,[\gain,1]);
 );
 
 s.record(numChannels:4);
