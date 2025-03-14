@@ -528,7 +528,7 @@ SynthDef.new(\ospace1, {
 				magz=Cartesian(0, 0,Select.kr(pl1,~magz));
 
 				//env=EnvGen.ar(Env.adsr(0.05,0.5,0.5,decay),gate,doneAction:2,levelScale:0.1);
-				env=EnvGen.ar(Env.perc(0.05,decay,amp),doneAction:2,levelScale:4 );
+				env=EnvGen.ar(Env.perc(0.05,decay,amp),doneAction:2,levelScale:8 );
 				//env=EnvGen.ar(Env.sine(decay,amp),doneAction:2,levelScale:1/10);
 //
 //fundamental=(12*6);
@@ -581,9 +581,9 @@ osc2=BPF.ar(sig,pitch2,rq,mul:amp2*magy.rho.round(0.00000001)* (rq.sqrt.reciproc
 osc3=BPF.ar(sig,pitch3,rq,mul:amp3*magz.rho.round(0.00000001)* (rq.sqrt.reciprocal));
 
 
-					Out.ar(0,LeakDC.ar(Limiter.ar(osc3,1/4,0.1),mul:env));
-					Out.ar(0,LeakDC.ar(Limiter.ar(osc2,1/4,0.1),mul:env));
-				Out.ar(0,LeakDC.ar(Limiter.ar(osc1,1/4,0.1),mul:env));
+					Out.ar(0,LeakDC.ar(Limiter.ar(osc3,1/10,0.1),mul:env));
+					Out.ar(0,LeakDC.ar(Limiter.ar(osc2,1/10,0.1),mul:env));
+				Out.ar(0,LeakDC.ar(Limiter.ar(osc1,1/10,0.1),mul:env));
 
 }).add;
 );
@@ -621,7 +621,7 @@ wt=signal.asWavetable;
 (
 (
 SynthDef.new(\obuff, {
-	arg buffer=0,gain=2;
+	arg buffer=0,gain=4;
 	var sig1,sig2,env;
 
 			//env= EnvGen.ar(Env.sine(10),doneAction:2);
@@ -632,9 +632,9 @@ SynthDef.new(\obuff, {
 
 			Out.ar(4,sig1*gain);
 				//Out.ar(5,sig2*gain);
-				Out.kr(0,Osc.kr(~m.bufnum,0.01,phase:0.degrad));
-				Out.kr(1,Osc.kr(~m.bufnum,0.01,phase:0.degrad));
-				Out.kr(2,Osc.kr(~m.bufnum,0.01,phase:0.degrad));
+				//Out.kr(0,Osc.kr(~m.bufnum,0.01,phase:0.degrad));
+				//Out.kr(1,Osc.kr(~m.bufnum,0.01,phase:0.degrad));
+				//Out.kr(2,Osc.kr(~m.bufnum,0.01,phase:0.degrad));
 
 
 }).add;
@@ -647,7 +647,7 @@ SynthDef.new(\obuff, {
 MIDIdef.cc(\midi1,{ |val, num, chan, src|
 		var band;
 	//[val, num, chan, src].postln;
-		band=val.linlin(0,127,0.00001,0.1).round(0.00001);
+		band=val.linlin(0,127,0.000001,0.1).round(0.0000001);
 		band.postln;
 				~controlBus.set(band);
 },25);
@@ -663,7 +663,7 @@ MIDIdef.cc(\midi2,{ |val, num, chan, src|
 	);
 				(
 MIDIdef.cc(\midi3,{ |val, num, chan, src|
-		var band;
+				 var band;
 	//[val, num, chan, src].postln;
 				band=val.linlin(0,127,1,16).round(1);
 		band.postln;
@@ -683,7 +683,7 @@ Scale.directory;
 
 (
 ~aa.play;
-~synth=Synth.new(\obuff,[\gain,1]);
+~synth=Synth.new(\obuff,[\gain,2]);
 );
 
 s.record(numChannels:4);
