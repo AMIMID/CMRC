@@ -165,7 +165,6 @@ mag_z=(Complex(sin((sph5.phi.round(0.00001)*m_z).wrap((pi/2).neg,(pi/2))),sin((s
 //~magz = ~magz.collect { |z| z / ~magz.maxItem };
  );
 );
-~dur=~dur*2;
 
 
 		//////////////////////wavetable
@@ -190,6 +189,7 @@ wt = signal.asWavetable;
 		~controlBus_ang = Bus.control(s, 1);
 		~controlBus_ang1 = Bus.control(s, 1);
 				~controlBus_spread = Bus.control(s, 1);
+		~controlBus_t = Bus.control(s, 1);
 	);
 
 	///phases
@@ -204,9 +204,9 @@ wt = signal.asWavetable;
 /////synths////
 		(
 SynthDef.new(\ospace, {
-	arg	gain=1/16, lfo_amp=0.05, harm=1, spread=1;
+	arg	gain=1/16, lfo_amp=0.05, harm=1, spread=1, ripple=0.01;
 	var sph3,sph4,sph5,m=0,pl1=0;
-	var phase,osc1,osc2,osc3,sphere,amp1,amp2,amp3,decay=8,pl2=0,envp,octave=1;
+	var phase,osc1,osc2,osc3,sphere,amp1,amp2,amp3,decay=8,pl2=0,envp,octave=8;
 	var ton1,ton2,ton3;
 	var fundamental;
 	var freq,pitch1,pitch2,pitch3,env;
@@ -216,7 +216,8 @@ SynthDef.new(\ospace, {
 	var ratio1,ratio2,ratio3;
 	var scale,nn=49.neg,ampx,ampy,ampz;
 	var interval,mod_angle,mod_angle0,mod_angle1;
-	var ellipsis=[1,1,1],mag;
+	var ellipsis=[1,1,1],mag,magxx;
+	var waveSpeed = 1, waveFreq = 4,amp=1, theta,phi,wave,t;
 
 			// var wrappedOut1 = { |busArray, signalArray|
 			// 	[busArray, signalArray].flop.do { |pair|
@@ -231,9 +232,10 @@ SynthDef.new(\ospace, {
 //	var out2 = NamedControl.kr(\out2, [0, 1, 2, 3, 4, 5]);  // multiple buses!
 //	var out3 = NamedControl.kr(\out3, [0, 1, 2, 3, 4, 5]);  // multiple buses!
 
-
-					Out.kr(~controlBus_m.index, harm.lag(0.1));
-Out.kr(~controlBus_spread.index, spread.lag(0.1));
+			t=SinOsc.kr(ripple.lag(0.1)).range(1, 100);
+			Out.kr(~controlBus_t.index,t);
+			Out.kr(~controlBus_m.index, harm.lag(0.1));
+			Out.kr(~controlBus_spread.index, spread.lag(0.1));
 
 			mod_angle=SinOsc.ar(lfo_amp.lag(0.1),0.degrad,mul:1).range(90.neg.degrad,90.degrad);
 			mod_angle1=SinOsc.ar(lfo_amp.lag(0.1),90.degrad,mul:1).range(90.neg.degrad,90.degrad);
@@ -242,11 +244,11 @@ Out.kr(~controlBus_spread.index, spread.lag(0.1));
 			Out.kr(~controlBus_ang1.index,mod_angle1);
 
 				scale=97.collect{nn=nn+1;Scale.major.performDegreeToKey(nn,12)};
-				fundamental=(12*64);freq=(fundamental*octave);
+				fundamental=(12);freq=(fundamental*octave);
 
-				4.do{
+				6.do{
 				m=m+1;
-				16.do{
+				24.do{
 
 					sph3=Spherical(1,~az.[pl1],~el.[pl1]);
 					sph4=Spherical(1,~az.[pl1],~el.[pl1]);
@@ -276,7 +278,13 @@ magy=((Complex(sin(((sph4.theta+mod_angle1).round(0.00001)*m).wrap(pi.neg,pi)),s
 magz=((Complex(cos(((sph5.phi+mod_angle).round(0.00001)*m).wrap((pi/2).neg,(pi/2))),cos(((sph5.phi+mod_angle1).round(0.00001)*m).wrap((pi/2).neg,(pi/2)))).rho/(2.sqrt)).pow(spread));
 
 
-				mag_x=magx.value; mag_y= magy.value; mag_z=magz.value; interval=Cartesian(mag_x,mag_y,mag_z).rho;
+	 theta = ~az[pl1].degrad;
+     phi = ~el[pl1].degrad;
+   // var wave = sin(waveFreq * theta + waveFreq * phi - waveSpeed * t);
+ wave = amp*sin(waveFreq * theta + waveFreq * phi - waveSpeed * t);
+magxx=  magx * wave;
+
+				mag_x=magxx.value; mag_y= magy.value; mag_z=magz.value; interval=Cartesian(mag_x,mag_y,mag_z).rho;
 				);
 					sphere=Spherical(48,~az.[pl1],~el.[pl1]);
 
@@ -295,7 +303,7 @@ amp1=(ton1.reciprocal*octave.reciprocal).round(0.00000001);amp2=(ton2.reciprocal
 
 osc1=VBAP.ar(4,SinOsc.ar(freq*int,mul:int.reciprocal*interval),~b.bufnum,sphere.theta.raddeg,sphere.phi.raddeg);
 
-				Out.ar(0,LeakDC.ar(osc1,mul:0.01*gain));
+				Out.ar(0,LeakDC.ar(osc1,mul:0.1*gain));
 					pl1=pl1+1;};int=int+1;pl1=0;}
 
 }).add;
@@ -303,7 +311,6 @@ osc1=VBAP.ar(4,SinOsc.ar(freq*int,mul:int.reciprocal*interval),~b.bufnum,sphere.
 
 //	TempoClock.default.tempo_(2);
 
-s.meter;s.freqscope;s.scope;
 
 
 
@@ -311,53 +318,55 @@ s.meter;s.freqscope;s.scope;
 )
 
 (
-			  var data,spread=1,ellipsis=[1,1,1];
-			 var az=0,el=0;
-			 var sph,pl=0,magg,r;
-			 var run = true;
-			 var ot=0.degrad,dota,pla=0;
-			 var  sph1,sph2,sph3,sph4,sph5,m=1.5;
-			 var az1=0,el1=0,az2=0,el2=0,az3=0,el3=0,mag,mag_x,mag_y,mag_z;
-			 var az4=0,el4=0,az5=0,el5=0,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0;
-			 var angle=0,ang=0;
-			 var azimuth,elevation,magnitudex,magnitudey,magnitudez;
-			 var durx,dury,durz;
-			 var sphx,sphy,sphz,azx,elx,azy,ely,azz,elz,plx=0,ply=0,plz=0;
-			 var num=1.neg,amplitudex,amplitudey,amplitudez,a,mod_angle,mod_angle1,mod_angle0;
+var data,spread=1,ellipsis=[1,1,1];
+var az=0,el=0;
+var sph,pl=0,magg,r;
+var run = true;
+var ot=0.degrad,dota,pla=0;
+var  sph1,sph2,sph3,sph4,sph5,m=1.5;
+var az1=0,el1=0,az2=0,el2=0,az3=0,el3=0,mag,mag_x,mag_y,mag_z;
+var az4=0,el4=0,az5=0,el5=0,pl1=0,pl2=0,pl3=0,pl4=0,pl5=0;
+var angle=0,ang=0;
+var azimuth,elevation,magnitudex,magnitudey,magnitudez;
+var durx,dury,durz;
+var sphx,sphy,sphz,azx,elx,azy,ely,azz,elz,plx=0,ply=0,plz=0;
+var num=1.neg,amplitudex,amplitudey,amplitudez,a,mod_angle,mod_angle1,mod_angle0;
+var t;
 			 data = [];
 
 Window.closeAll;
+s.meter;s.freqscope;s.scope;
 w=Window.new("gui",Rect.new(750,100,500,420)).front.alwaysOnTop_(true);
-			~aa = Slider.new(w.view,Rect.new(20,20,160,30));
+~aa = Slider.new(w.view,Rect.new(20,20,400,30));
 
-~dd = Slider.new(w.view,Rect.new(20,100,160,30));
+~bb = Slider.new(w.view,Rect.new(20,60,400,30));
 
-~bb = Slider.new(w.view,Rect.new(20,60,160,30));
+~cc = Slider.new(w.view,Rect.new(20,140,400,30));
 
-~cc = Slider.new(w.view,Rect.new(20,140,160,30));
+~dd = Slider.new(w.view,Rect.new(20,100,400,30));
+
+~ee = Slider.new(w.view,Rect.new(20,180,400,30));
 
 ~on = Button(w,Rect(20,350,40,40)).states_([
 	["off",Color.black],Color.gray,["on",Color.white,Color.gray]]).action_({
 	arg obj;
 	if(
 		obj.value==1,{~synth=Synth.new(\ospace,[
-						\gain,~aa.value,\lfo_amp,~bb.value.linlin(0,1,0.01,20),\harm,~dd.value.linlin(0,1,1,4).round(1),\spread,~cc.value.linlin(0,1,1,100)]).register;},
+			\gain,~aa.value,\lfo_amp,~bb.value.linlin(0,1,0.01,20).round(1/32),\harm,~dd.value.linlin(0,1,1,4).round(1),\spread,~cc.value.linlin(0,1,1,100),\ripple,~ee.value.linlin(0,1,0.001,100)]).register;},
 		{~synth.free}
 )});
-/*(
-a = StaticText(w, Rect(190,20,100, 20));
-a.string = "gain1";
-b = StaticText(w, Rect(190,60,100, 20));
-b.string = "gain2";
-c = StaticText(w, Rect(20,300,200, 20));
-c.string = "3d bandpass s_real";
-d = StaticText(w, Rect(240,300,200, 20));
-d.string = "3d bandpass s_imag";
-e = StaticText(w, Rect(420,20,200, 20));
-e.string = "reverb1";
-f = StaticText(w, Rect(420,60,200, 20));
-f.string = "reverb2";
-)*/
+(
+a = StaticText(w, Rect(430,20,100, 20));
+a.string = "gain";
+b = StaticText(w, Rect(430,60,100, 20));
+b.string = "lfo";
+c = StaticText(w, Rect(430,100,100, 20));
+c.string = "harm";
+d = StaticText(w, Rect(430,140,100, 20));
+d.string = "spread";
+e = StaticText(w, Rect(430,180,100, 20));
+e.string = "ripple";
+);
 			(
 ~aa.value_(1).action_({
 	arg obj;
@@ -371,7 +380,7 @@ f.string = "reverb2";
 ~bb.value_(1).action_({
 	arg obj;
 			var lfo_amp;
-	lfo_amp=obj.value.linlin(0,1,0.001,20);
+	lfo_amp=obj.value.linlin(0,1,0.001,20).round(1/32);
 				lfo_amp.value.postln;
 		if(~synth.isPlaying,{~synth.set(\lfo_amp,lfo_amp)});
 }););
@@ -392,6 +401,15 @@ f.string = "reverb2";
 if(~synth.isPlaying,{~synth.set(\harm,harm)});
 });
 );
+(
+~ee.action_({
+	arg obj;
+			var ripple;
+	ripple=obj.value.linlin(0,1,0.001,100);
+				ripple.value.postln;
+if(~synth.isPlaying,{~synth.set(\ripple,ripple)});
+});
+);
 /*(
 
 			 ~v = UserView.new(w,Rect(220,150,200,200)).background_(Color.black);
@@ -404,13 +422,11 @@ if(~synth.isPlaying,{~synth.set(\harm,harm)});
 			 r= Routine({loop{
 
 			 	data=[];
-				m=~controlBus_m.getSynchronous;
-			 //	amplitudex=~controlBus_ax.getSynchronous;
-		//	amplitudey=~controlBus_ay.getSynchronous;
-		//	amplitudez=~controlBus_az.getSynchronous;
-	mod_angle=~controlBus_ang.getSynchronous;
-	mod_angle1=~controlBus_ang1.getSynchronous;
-	spread=~controlBus_spread.getSynchronous;
+m=~controlBus_m.getSynchronous;
+t = ~controlBus_t.getSynchronous;
+mod_angle=~controlBus_ang.getSynchronous;
+mod_angle1=~controlBus_ang1.getSynchronous;
+spread=~controlBus_spread.getSynchronous;
 			 	//	a.symbolColor = Color.new(amplitude,1,amplitude);
 
 			 	(
@@ -489,6 +505,16 @@ angle=(angle+(360-(360/1.6180339887499))).wrap(0,360);~azz=~azz++azimuth;~ell=~e
 ~magxx = ~magxx.collect { |z| z / ~magxx.maxItem };
 ~magyy = ~magyy.collect { |z| z / ~magyy.maxItem };
 ~magzz = ~magzz.collect { |z| z / ~magzz.maxItem };
+						~magxxx = ~magxx.collect { |val, i|
+	var waveSpeed = 1;
+	var waveFreq = 4;
+	var amp=0.4;
+	var theta = ~az[i].degrad;
+    var phi = ~el[i].degrad;
+   // var wave = sin(waveFreq * theta + waveFreq * phi - waveSpeed * t);
+	var wave = amp*sin(waveFreq * theta + waveFreq * phi - waveSpeed * t);
+    val * wave;
+};
  );
 );
 				dota=(360*6).collect{
